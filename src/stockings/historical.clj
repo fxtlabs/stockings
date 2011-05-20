@@ -3,7 +3,7 @@
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (split-lines)]
         [clojure.contrib.def :only (defvar-)]
-        [clj-time.core :only (date-time)]
+        [clj-time.core :only (date-time year month day)]
         [clj-time.format :only (formatters unparse)]
         [clj-time.coerce :only (from-date)])
   (:require [clj-http.client :as client])
@@ -16,8 +16,12 @@
 
 (defvar- date-parser (SimpleDateFormat. "dd-MMM-yy"))
 
-(defn- parse-date [#^String s]
-  (from-date (.parse date-parser s)))
+(defn- parse-date
+  "Parse a string representing a date into a org.joda.time.DateTime object.
+   The resulting object represents the date at midnight UTC."
+  [#^String s]
+  (let [date (from-date (.parse date-parser s))]
+    (date-time (year date) (month date) (day date))))
 
 (defvar- re-line
   #"((?:[0-9]|[123][0-9])-\w{3}-[0-9]{2}),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?)"
@@ -73,7 +77,8 @@
   "Returns a sequence of historical stock quotes for the supplied stock
    symbol. The symbol can optionally be prefixed by the stock exchange
    (e.g. \"GOOG\" or \"NASDAQ:GOOG\"). A start and end date can be provided
-   to constrain the range of historical quotes returned."
+   to constrain the range of historical quotes returned. Otherwise, it
+   returns the quotes for one year up to the current date."
   ([#^String stock-symbol]
      (get-quotes* {:q stock-symbol}))
   ([#^String stock-symbol #^DateTime start-date #^DateTime end-date]
@@ -96,3 +101,19 @@
   (let [res (get-quotes stock-symbol date date)]
     (if (empty? res) nil (first res))))
 
+(defn- build-lookup
+  "Takes a sequence of historical quotes for a stock and returns a
+   function that looks up those historical quotes by date. This lookup
+   function will normally return nil if there is no quote for the requested
+   date; however, if called with an optional second parameter set to a
+   truthy value, the lookup function will return the quote for the closest
+   earlier date if a quote for the exact date is not available.
+   Note that in this latter case, performance will be slower."
+  [quotes]
+  (let [m (apply sorted-map (mapcat (fn [q] [(:date q) q]) quotes))]
+    (fn [#^DateTime date & [closest-match?]]
+      (let [date (date-time (year date) (month date) (day date))])
+      (if closest-match?
+        (if-let [lte-part (rsubseq m <= date)]
+          (val (first lte-part)))
+        (get m date)))))

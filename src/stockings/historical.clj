@@ -101,7 +101,7 @@
   (let [res (get-quotes stock-symbol date date)]
     (if (empty? res) nil (first res))))
 
-(defn- build-lookup
+(defn build-lookup
   "Takes a sequence of historical quotes for a stock and returns a
    function that looks up those historical quotes by date. This lookup
    function will normally return nil if there is no quote for the requested

@@ -32,6 +32,8 @@ in the ``autodoc`` directory under the project root.
 Notes
 -----
 
+The historical stock quotes are downloaded on-the-fly from Google Finance.
+
 NASDAQ keeps lists of the companies traded on the NASDAQ, NYSE, and
 AMEX exchanges at http://www.nasdaq.com/screening/company-list.aspx.
 

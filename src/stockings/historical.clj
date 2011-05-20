@@ -1,4 +1,6 @@
 (ns stockings.historical
+  "Functions for getting, parsing, and looking up historical stock quotes."
+  {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (split-lines)]
         [clojure.contrib.def :only (defvar-)]
         [clj-time.core :only (date-time)]

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>stockings.core API reference (Stockings)</title>
+    <title>stockings.exchanges API reference (Stockings)</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -47,23 +47,73 @@ namespace.
   <h1 class="nopad">Table of Contents</h1>
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
-    
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.exchanges/amex">amex</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.exchanges/exchanges">exchanges</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.exchanges/industry-sectors">industry-sectors</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.exchanges/nasdaq">nasdaq</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.exchanges/nyse">nyse</a>
+    </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">stockings.core</span></h1>
-by <span id="author">Unknown</span><br />
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">stockings.exchanges</span></h1>
+by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
 <br />Usage:
 <pre>
 (ns your-namespace
-  (:require <span id="long-name">stockings.core</span>))
+  (:require <span id="long-name">stockings.exchanges</span>))
 </pre><pre>
 </pre><h2>Overview</h2>
-<pre id="namespace-docstr"></pre>
+<pre id="namespace-docstr">Functions to get basic info on the AMEX, NASDAQ, and NYSE stock exchanges.</pre>
 <br />
 <h2>Public Variables and Functions</h2>
-
+<div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="stockings.exchanges/amex">amex</h2>
+  <span id="var-type">var</span><br />
+  <pre id="var-usage"></pre>
+  <pre id="var-docstr">A StockExchange object describing the NYSE Amex Equities (AMEX).</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob//src/stockings/exchanges.clj#L16" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="stockings.exchanges/exchanges">exchanges</h2>
+  <span id="var-type">var</span><br />
+  <pre id="var-usage"></pre>
+  <pre id="var-docstr">A map from stock exchange keywords to StockExchange objects.</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob//src/stockings/exchanges.clj#L20" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="stockings.exchanges/industry-sectors">industry-sectors</h2>
+  <span id="var-type">var</span><br />
+  <pre id="var-usage"></pre>
+  <pre id="var-docstr">A list of the major industry sectors as classified by the NASDAQ.</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob//src/stockings/exchanges.clj#L27" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="stockings.exchanges/nasdaq">nasdaq</h2>
+  <span id="var-type">var</span><br />
+  <pre id="var-usage"></pre>
+  <pre id="var-docstr">A StockExchange object describing the NASDAQ Stock Market (NASDAQ).</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob//src/stockings/exchanges.clj#L8" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="stockings.exchanges/nyse">nyse</h2>
+  <span id="var-type">var</span><br />
+  <pre id="var-usage"></pre>
+  <pre id="var-docstr">A StockExchange object describing the New York Stock Exchange (NYSE).</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob//src/stockings/exchanges.clj#L12" id="var-source">Source</a>
+</div>
 
 
 </div>

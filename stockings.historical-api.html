@@ -48,6 +48,8 @@ namespace.
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
     <div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.historical/build-lookup">build-lookup</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#stockings.historical/get-quote">get-quote</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#stockings.historical/get-quotes">get-quotes</a>
@@ -72,6 +74,21 @@ by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
 <div id="var-entry">
   <br />
   <hr />
+  <h2 id="stockings.historical/build-lookup">build-lookup</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (build-lookup quotes)
+</pre>
+  <pre id="var-docstr">Takes a sequence of historical quotes for a stock and returns a
+function that looks up those historical quotes by date. This lookup
+function will normally return nil if there is no quote for the requested
+date; however, if called with an optional second parameter set to a
+truthy value, the lookup function will return the quote for the closest
+earlier date if a quote for the exact date is not available.
+Note that in this latter case, performance will be slower.</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/b71726228abcda274cd1b9d6765ff2edaa5b86ae/src/stockings/historical.clj#L104" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
   <h2 id="stockings.historical/get-quote">get-quote</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-quote stock-symbol date)
@@ -81,7 +98,7 @@ The symbol can optionally be prefixed by the stock exchange
 (e.g. "GOOG" or "NASDAQ:GOOG"). A start and end date can be provided
 to constrain the range of historical quotes returned. It returns nil if
 the stock market was closed on the requested date.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/2e3de744826fc9de04af6f783a01a0dc0e7d2525/src/stockings/historical.clj#L94" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/b71726228abcda274cd1b9d6765ff2edaa5b86ae/src/stockings/historical.clj#L94" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -95,7 +112,7 @@ symbol. The symbol can optionally be prefixed by the stock exchange
 (e.g. "GOOG" or "NASDAQ:GOOG"). A start and end date can be provided
 to constrain the range of historical quotes returned. Otherwise, it
 returns the quotes for one year up to the current date.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/2e3de744826fc9de04af6f783a01a0dc0e7d2525/src/stockings/historical.clj#L76" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/b71726228abcda274cd1b9d6765ff2edaa5b86ae/src/stockings/historical.clj#L76" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -105,7 +122,7 @@ returns the quotes for one year up to the current date.</pre>
 </pre>
   <pre id="var-docstr">Parses a string of CSV-encoded historical stock quotes and returns them
 as a sequence of StockQuote records.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/2e3de744826fc9de04af6f783a01a0dc0e7d2525/src/stockings/historical.clj#L54" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/b71726228abcda274cd1b9d6765ff2edaa5b86ae/src/stockings/historical.clj#L54" id="var-source">Source</a>
 </div>
 
 

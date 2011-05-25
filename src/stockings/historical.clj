@@ -2,26 +2,21 @@
   "Functions for getting, parsing, and looking up historical stock quotes."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (split-lines)]
-        [clojure.contrib.def :only (defvar-)]
-        [clj-time.core :only (date-time year month day)]
-        [clj-time.format :only (formatters unparse)]
-        [clj-time.coerce :only (from-date)])
+        [clojure.contrib.def :only (defvar-)])
   (:require [clj-http.client :as client])
-  (:import java.text.SimpleDateFormat
-           (org.joda.time DateTime)))
+  (:import (org.joda.time DateTime LocalDate)
+           (org.joda.time.format DateTimeFormat)))
 
 (defvar- source-url "http://www.google.com/finance/historical")
 
-(defrecord StockQuote [#^DateTime date open high low close volume])
+(defrecord StockQuote [#^LocalDate date open high low close volume])
 
-(defvar- date-parser (SimpleDateFormat. "dd-MMM-yy"))
+(defvar- date-parser (DateTimeFormat/forPattern "dd-MMM-yy"))
 
 (defn- parse-date
-  "Parse a string representing a date into a org.joda.time.DateTime object.
-   The resulting object represents the date at midnight UTC."
+  "Parse a string representing a date into a org.joda.time.LocalDate object."
   [#^String s]
-  (let [date (from-date (.parse date-parser s))]
-    (date-time (year date) (month date) (day date))))
+  (.toLocalDate (.parseDateTime date-parser s)))
 
 (defvar- re-line
   #"((?:[0-9]|[123][0-9])-\w{3}-[0-9]{2}),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?)"
@@ -62,8 +57,6 @@
        (filter valid-record?)
        (map convert-record)))
 
-(defvar- date-formatter (formatters :year-month-day))
-
 (defn- get-quotes*
   "Requests historical stock quotes from the financial web service using
    the supplied parameters map to build a query string. The quotes are
@@ -81,10 +74,10 @@
    returns the quotes for one year up to the current date."
   ([#^String stock-symbol]
      (get-quotes* {:q stock-symbol}))
-  ([#^String stock-symbol #^DateTime start-date #^DateTime end-date]
+  ([#^String stock-symbol #^LocalDate start-date #^LocalDate end-date]
      (letfn [(add [params key date]
                   (if date
-                    (assoc params key (unparse date-formatter date))
+                    (assoc params key (str date))
                     params))]
        (-> {:q stock-symbol}
            (add :startdate start-date)
@@ -97,7 +90,7 @@
    (e.g. \"GOOG\" or \"NASDAQ:GOOG\"). A start and end date can be provided
    to constrain the range of historical quotes returned. It returns nil if
    the stock market was closed on the requested date."
-  [#^String stock-symbol #^DateTime date]
+  [#^String stock-symbol #^LocalDate date]
   (let [res (get-quotes stock-symbol date date)]
     (if (empty? res) nil (first res))))
 
@@ -111,9 +104,9 @@
    Note that in this latter case, performance will be slower."
   [quotes]
   (let [m (apply sorted-map (mapcat (fn [q] [(:date q) q]) quotes))]
-    (fn [#^DateTime date & [closest-match?]]
-      (let [date (date-time (year date) (month date) (day date))])
+    (fn [#^LocalDate date & [closest-match?]]
       (if closest-match?
         (if-let [lte-part (rsubseq m <= date)]
           (val (first lte-part)))
         (get m date)))))
+

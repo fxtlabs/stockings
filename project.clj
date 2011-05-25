@@ -2,8 +2,8 @@
   :description "Get current and historical stock quotes."
   :url "https://github.com/fxtlabs/stockings"
   :dependencies [[org.clojure/clojure "1.2.1"]
+                 [joda-time "1.6"]
                  [clojure-csv "1.2.4"]
-                 [clj-time "0.3.0"]
                  [clj-http "0.1.3"]]
   :dev-dependencies 
   [[autodoc "0.7.1"

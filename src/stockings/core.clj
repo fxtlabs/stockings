@@ -144,6 +144,10 @@
             result (yql/submit-query query)]
         (yql/map-parser (wrap-error-check parser) (:quote result))))))
 
+(defn get-quote
+  ([parser stock-symbol] (first (get-quotes parser stock-symbol)))
+  ([stock-symbol] (first (get-quotes stock-symbol))))
+
 ;;;
 ;;; Get historical quotes
 ;;;
@@ -216,6 +220,9 @@
           result (yql/submit-query query)]
       (yql/map-parser parse-stock (:stock result)))))
 
+(defn get-stock [stock-symbol]
+  (first (get-stocks stock-symbol)))
+
 ;;;
 ;;; Industries
 ;;;
@@ -231,6 +238,9 @@
                   (yql/yql-string-list industry-ids))
           result (yql/submit-query query)]
       (yql/map-parser identity (:industry result)))))
+
+(defn get-industry [industry-id]
+  (first (get-industries industry-id)))
 
 ;;;
 ;;; Get current exchange rate
@@ -257,9 +267,16 @@
        :bid bid
        :date-time date-time})))
 
+(defn get-xchanges [& currency-pairs]
+  (if currency-pairs
+    (let [pairs (map (fn [[base-currency quote-currency]]
+                       (str (name base-currency)
+                            (name quote-currency))) currency-pairs)
+          query (str "select * from yahoo.finance.xchange where pair in "
+                     (yql/yql-string-list pairs))
+          result (yql/submit-query query)]
+      (yql/map-parser parse-xchange (:rate result)))))
+
 (defn get-xchange [base-currency quote-currency]
-  (let [query (str "select * from yahoo.finance.xchange where pair = \""
-                   (name base-currency) (name quote-currency) "\"")
-        result (yql/submit-query query)]
-    (yql/map-parser parse-xchange (:rate result))))
+  (first (get-xchanges [base-currency quote-currency])))
 

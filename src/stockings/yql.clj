@@ -39,7 +39,7 @@
 (defn map-parser [parser data]
   (if (vector? data)
     (map parser data)
-    (parser data)))
+    (list (parser data))))
 
 ;;;
 ;;; Parsers

@@ -69,6 +69,9 @@
             payload (xml/parse input-stream)]
         (map parse-quote (:content payload))))))
 
+(defn get-quote [stock-symbol]
+  (first (get-quotes stock-symbol)))
+
 ;;;
 ;;; Get historical quotes
 ;;;

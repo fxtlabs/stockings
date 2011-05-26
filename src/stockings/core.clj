@@ -25,16 +25,16 @@
 ;;; DateTime object in UTC from the date and time given.
 ;;; You will want to use it if you are assembling a time stamp from
 ;;; the LastTradeDate and LastTradeTime fields in the stock quotes
-;;; fetched by get-quotes or just use parse-last-trade-time-stamp.
+;;; fetched by get-quotes or just use parse-last-trade-date-time.
 ;;; WARNING: use it only for data retrieved from the quotes.csv
 ;;; service above!
 
 (defvar- nyc-date-time-zone
   (DateTimeZone/forTimeZone (TimeZone/getTimeZone "America/New_York")))
 
-(defn get-correct-time-stamp [^LocalDate date ^LocalTime time]
-  (let [wrong-time-stamp (.toDateTime date time nyc-date-time-zone)]
-    (.withFields (.toDateTime wrong-time-stamp DateTimeZone/UTC) date)))
+(defn get-correct-date-time [^LocalDate date ^LocalTime time]
+  (let [wrong-date-time (.toDateTime date time nyc-date-time-zone)]
+    (.withFields (.toDateTime wrong-date-time DateTimeZone/UTC) date)))
 
 ;;;
 ;;; Get current quotes
@@ -95,14 +95,16 @@
    :EPSEstimateNextQuarter yql/parse-double
    :PriceEPSEstimateCurrentYear yql/parse-double})
 
+(defvar raw-quote-keys (keys quote-parse-map))
+
 (defn parse-quote-item [raw-quote k]
   (if-let [value-parser (get quote-parse-map k)]
     (value-parser (get raw-quote k))))
 
-(defn parse-last-trade-time-stamp [raw-quote]
+(defn parse-last-trade-date-time [raw-quote]
   (let [date (parse-quote-item raw-quote :LastTradeDate)
         time (parse-quote-item raw-quote :LastTradeTime)]
-    (get-correct-time-stamp date time)))
+    (get-correct-date-time date time)))
 
 (defn build-quote-parser [key-map]
   (fn [raw-quote]
@@ -124,7 +126,7 @@
 (defn default-quote-parser [raw-quote]
   (let [stock-quote (default-quote-parser* raw-quote)]
     (assoc stock-quote
-      :last-trade-time-stamp (parse-last-trade-time-stamp raw-quote))))
+      :last-trade-date-time (parse-last-trade-date-time raw-quote))))
 
 (defn- wrap-error-check [parser]
   (fn [r]
@@ -247,13 +249,13 @@
           bid (yql/parse-double (:Bid r))
           date (yql/parse-date (:Date r))
           time (yql/parse-time (:Time r))
-          time-stamp (get-correct-time-stamp date time)]
+          date-time (get-correct-date-time date time)]
       {:base base-currency
        :quote quote-currency
        :rate rate
        :ask ask
        :bid bid
-       :time-stamp time-stamp})))
+       :date-time date-time})))
 
 (defn get-xchange [base-currency quote-currency]
   (let [query (str "select * from yahoo.finance.xchange where pair = \""

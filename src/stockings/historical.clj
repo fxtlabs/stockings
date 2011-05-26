@@ -5,11 +5,10 @@
         [clojure.contrib.def :only (defvar-)])
   (:require [clj-http.client :as client])
   (:import (org.joda.time DateTime LocalDate)
-           (org.joda.time.format DateTimeFormat)))
+           (org.joda.time.format DateTimeFormat)
+           (stockings.core HistoricalQuote)))
 
 (defvar- source-url "http://www.google.com/finance/historical")
-
-(defrecord StockQuote [#^LocalDate date open high low close volume])
 
 (defvar- date-parser (DateTimeFormat/forPattern "dd-MMM-yy"))
 
@@ -36,7 +35,7 @@
 
 (defn- convert-record
   "Converts the regular expression matches corresponding to one line of
-   the CSV-encoded quotes into a StockQuote record."
+   the CSV-encoded quotes into a HistoricalQuote record."
   [r]
   (let [date (parse-date (nth r 1))
         open (Float/parseFloat (nth r 2))
@@ -44,11 +43,11 @@
         low (Float/parseFloat (nth r 4))
         close (Float/parseFloat (nth r 5))
         volume (Float/parseFloat (nth r 6))]
-    (StockQuote. date open high low close volume)))
+    (HistoricalQuote. date open high low close volume)))
 
 (defn parse-quotes
   "Parses a string of CSV-encoded historical stock quotes and returns them
-   as a sequence of StockQuote records."
+   as a sequence of HistoricalQuote records."
   [#^String s]
   (->> s
        split-lines
@@ -60,7 +59,7 @@
 (defn- get-quotes*
   "Requests historical stock quotes from the financial web service using
    the supplied parameters map to build a query string. The quotes are
-   returned as a sequence of StockQuote records."
+   returned as a sequence of HistoricalQuote records."
   [params]
   (let [params (merge {:output "csv"} params)
         request (client/get source-url {:query-params params})]
@@ -93,20 +92,4 @@
   [#^String stock-symbol #^LocalDate date]
   (let [res (get-quotes stock-symbol date date)]
     (if (empty? res) nil (first res))))
-
-(defn build-lookup
-  "Takes a sequence of historical quotes for a stock and returns a
-   function that looks up those historical quotes by date. This lookup
-   function will normally return nil if there is no quote for the requested
-   date; however, if called with an optional second parameter set to a
-   truthy value, the lookup function will return the quote for the closest
-   earlier date if a quote for the exact date is not available.
-   Note that in this latter case, performance will be slower."
-  [quotes]
-  (let [m (apply sorted-map (mapcat (fn [q] [(:date q) q]) quotes))]
-    (fn [#^LocalDate date & [closest-match?]]
-      (if closest-match?
-        (if-let [lte-part (rsubseq m <= date)]
-          (val (first lte-part)))
-        (get m date)))))
 

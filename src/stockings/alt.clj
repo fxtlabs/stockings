@@ -1,5 +1,5 @@
-(ns stockings.historical
-  "Functions for getting, parsing, and looking up historical stock quotes."
+(ns stockings.alt
+  "Alternative functions for getting and parsing historical stock quotes."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (split-lines)]
         [clojure.contrib.def :only (defvar-)])
@@ -38,11 +38,11 @@
    the CSV-encoded quotes into a HistoricalQuote record."
   [r]
   (let [date (parse-date (nth r 1))
-        open (Float/parseFloat (nth r 2))
-        high (Float/parseFloat (nth r 3))
-        low (Float/parseFloat (nth r 4))
-        close (Float/parseFloat (nth r 5))
-        volume (Float/parseFloat (nth r 6))]
+        open (Double/parseDouble (nth r 2))
+        high (Double/parseDouble (nth r 3))
+        low (Double/parseDouble (nth r 4))
+        close (Double/parseDouble (nth r 5))
+        volume (Double/parseDouble (nth r 6))]
     (HistoricalQuote. date open high low close volume)))
 
 (defn parse-quotes
@@ -56,16 +56,7 @@
        (filter valid-record?)
        (map convert-record)))
 
-(defn- get-quotes*
-  "Requests historical stock quotes from the financial web service using
-   the supplied parameters map to build a query string. The quotes are
-   returned as a sequence of HistoricalQuote records."
-  [params]
-  (let [params (merge {:output "csv"} params)
-        request (client/get source-url {:query-params params})]
-    (parse-quotes (:body request))))
-
-(defn get-quotes
+(defn get-historical-quotes
   "Returns a sequence of historical stock quotes for the supplied stock
    symbol. The symbol can optionally be prefixed by the stock exchange
    (e.g. \"GOOG\" or \"NASDAQ:GOOG\"). A start and end date can be provided
@@ -74,22 +65,10 @@
   ([^String stock-symbol]
      (get-quotes* {:q stock-symbol}))
   ([^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
-     (letfn [(add [params key date]
-                  (if date
-                    (assoc params key (str date))
-                    params))]
-       (-> {:q stock-symbol}
-           (add :startdate start-date)
-           (add :enddate end-date)
-           get-quotes*))))
-
-(defn get-quote
-  "Returns the stock quotes for the supplied stock symbol and date.
-   The symbol can optionally be prefixed by the stock exchange
-   (e.g. \"GOOG\" or \"NASDAQ:GOOG\"). A start and end date can be provided
-   to constrain the range of historical quotes returned. It returns nil if
-   the stock market was closed on the requested date."
-  [^String stock-symbol ^LocalDate date]
-  (let [res (get-quotes stock-symbol date date)]
-    (if (empty? res) nil (first res))))
+     (let [params {:q stock-symbol
+                   :startdate (str start-date)
+                   :enddate (str end-date)
+                   :output "csv"}
+           response (client/get source-url {:query-params params})]
+       (parse-quotes (:body request)))))
 

@@ -1,14 +1,77 @@
 (ns stockings.alt
   "Alternative functions for getting and parsing historical stock quotes."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
-  (:use [clojure.string :only (split-lines)]
+  (:use [clojure.string :only (join split-lines lower-case)]
         [clojure.contrib.def :only (defvar-)])
-  (:require [clj-http.client :as client])
-  (:import (org.joda.time DateTime LocalDate)
+  (:require [clojure.xml :as xml]
+            [clj-http.client :as client]
+            [stockings.yql :as yql])
+  (:import (java.net URLEncoder)
+           (java.io ByteArrayInputStream)
+           (org.joda.time DateTime LocalDate DateTimeZone)
            (org.joda.time.format DateTimeFormat)
            (stockings.core HistoricalQuote)))
 
-(defvar- source-url "http://www.google.com/finance/historical")
+;;;
+;;; Get current quotes
+;;;
+
+(defvar- date-time-parser
+  (.withZone (DateTimeFormat/forPattern "yyyyMMddHHmmss") DateTimeZone/UTC))
+
+(defn- parse-date-time
+  [^String date ^String time]
+  (if-not (or (empty? date) (empty? time))
+    (.parseDateTime date-time-parser (str date time))))
+
+(defn- parse-keyword [s]
+  (if-not (empty? s)
+    (keyword (lower-case s))))
+
+(defn- parse-quote [raw-quote]
+  (let [raw-map (apply hash-map
+                       (mapcat (fn [m] [(:tag m) (:data (:attrs m))])
+                               (:content raw-quote)))]
+    ;; If the requested stock symbol could not be found, the
+    ;; value of the :company key will be empty
+    ;; (in this case, the parser returns nil).
+    (if-not (empty? (:company raw-map))
+      {:stock-symbol (:symbol raw-map)
+       :exchange (:exchange raw-map)
+       :company-name (:company raw-map)
+       :currency (parse-keyword (:currency raw-map))
+       :previous-close (yql/parse-double (:y_close raw-map))
+       :open (yql/parse-double (:open raw-map))
+       :low (yql/parse-double (:low raw-map))
+       :high (yql/parse-double (:high raw-map))
+       :last (yql/parse-double (:last raw-map))
+       :last-date-time (parse-date-time (:trade_date_utc raw-map)
+                                        (:trade_time_utc raw-map))
+       :change (yql/parse-double (:change raw-map))
+       :percent-change (/ (yql/parse-double (:perc_change raw-map)) 100.0)
+       :volume (yql/parse-int (:volume raw-map))
+       :avg-volume (yql/parse-double (:avg_volume raw-map))})))
+
+(defn- build-quotes-query-string [stock-symbols]
+  (join "&" (map (fn [s] (str "stock=" (URLEncoder/encode s "UTF-8")))
+                 stock-symbols)))
+
+(defn get-quotes [& stock-symbols]
+  (if stock-symbols
+    (let [url (str "http://www.google.com/ig/api?"
+                   (build-quotes-query-string stock-symbols))
+          response (client/get url)
+          status (:status response)]
+      (if (not= status 200)
+        (throw (RuntimeException. (str "Response status: " status))))
+      (let [input-stream (ByteArrayInputStream. (.getBytes (:body response)
+                                                           "UTF-8"))
+            payload (xml/parse input-stream)]
+        (map parse-quote (:content payload))))))
+
+;;;
+;;; Get historical quotes
+;;;
 
 (defvar- date-parser (DateTimeFormat/forPattern "dd-MMM-yy"))
 
@@ -45,7 +108,7 @@
         volume (Double/parseDouble (nth r 6))]
     (HistoricalQuote. date open high low close volume)))
 
-(defn parse-quotes
+(defn parse-historical-quotes
   "Parses a string of CSV-encoded historical stock quotes and returns them
    as a sequence of HistoricalQuote records."
   [^String s]
@@ -59,16 +122,17 @@
 (defn get-historical-quotes
   "Returns a sequence of historical stock quotes for the supplied stock
    symbol. The symbol can optionally be prefixed by the stock exchange
-   (e.g. \"GOOG\" or \"NASDAQ:GOOG\"). A start and end date can be provided
-   to constrain the range of historical quotes returned. Otherwise, it
-   returns the quotes for one year up to the current date."
-  ([^String stock-symbol]
-     (get-quotes* {:q stock-symbol}))
-  ([^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
-     (let [params {:q stock-symbol
-                   :startdate (str start-date)
-                   :enddate (str end-date)
-                   :output "csv"}
-           response (client/get source-url {:query-params params})]
-       (parse-quotes (:body request)))))
+   (e.g. \"GOOG\" or \"NASDAQ:GOOG\"). A start and end date must also
+   be provided to constrain the range of historical quotes returned."
+  [^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
+  (let [params {:q stock-symbol
+                :startdate (str start-date)
+                :enddate (str end-date)
+                :output "csv"}
+        response (client/get "http://www.google.com/finance/historical"
+                             {:query-params params})
+        status (:status response)]
+    (if (not= status 200)
+      (throw (RuntimeException. (str "Response status: " status))))
+    (parse-historical-quotes (:body response))))
 

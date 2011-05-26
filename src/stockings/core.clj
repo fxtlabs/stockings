@@ -114,11 +114,11 @@
 (defvar- default-key-map
   {:stock-symbol :symbol
    :company-name :Name
-   :last-trade :LastTradePriceOnly
+   :last :LastTradePriceOnly
    :open :Open
    :previous-close :PreviousClose
-   :day-high :DaysHigh
-   :day-low :DaysLow
+   :high :DaysHigh
+   :low :DaysLow
    :volume :Volume})
 
 (defvar- default-quote-parser* (build-quote-parser default-key-map))
@@ -126,7 +126,7 @@
 (defn default-quote-parser [raw-quote]
   (let [stock-quote (default-quote-parser* raw-quote)]
     (assoc stock-quote
-      :last-trade-date-time (parse-last-trade-date-time raw-quote))))
+      :last-date-time (parse-last-trade-date-time raw-quote))))
 
 (defn- wrap-error-check [parser]
   (fn [r]

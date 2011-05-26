@@ -64,9 +64,6 @@
     (if-let [m (re-matches #"((?:\+|\-)?\d+(?:\.\d*)?)%" s)]
       (/ (Double/parseDouble (second m)) 100.0))))
 
-;;; FIXME: not implemented yet! They should return a DateTime object.
-(defn parse-time [s] s)
-
 (defvar- date-parsers
   [(DateTimeFormat/forPattern "yyyy-MM-dd")
    (DateTimeFormat/forPattern "M/dd/yyyy")])

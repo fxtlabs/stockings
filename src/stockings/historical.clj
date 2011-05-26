@@ -14,7 +14,7 @@
 
 (defn- parse-date
   "Parse a string representing a date into a org.joda.time.LocalDate object."
-  [#^String s]
+  [^String s]
   (.toLocalDate (.parseDateTime date-parser s)))
 
 (defvar- re-line
@@ -48,7 +48,7 @@
 (defn parse-quotes
   "Parses a string of CSV-encoded historical stock quotes and returns them
    as a sequence of HistoricalQuote records."
-  [#^String s]
+  [^String s]
   (->> s
        split-lines
        rest
@@ -71,9 +71,9 @@
    (e.g. \"GOOG\" or \"NASDAQ:GOOG\"). A start and end date can be provided
    to constrain the range of historical quotes returned. Otherwise, it
    returns the quotes for one year up to the current date."
-  ([#^String stock-symbol]
+  ([^String stock-symbol]
      (get-quotes* {:q stock-symbol}))
-  ([#^String stock-symbol #^LocalDate start-date #^LocalDate end-date]
+  ([^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
      (letfn [(add [params key date]
                   (if date
                     (assoc params key (str date))
@@ -89,7 +89,7 @@
    (e.g. \"GOOG\" or \"NASDAQ:GOOG\"). A start and end date can be provided
    to constrain the range of historical quotes returned. It returns nil if
    the stock market was closed on the requested date."
-  [#^String stock-symbol #^LocalDate date]
+  [^String stock-symbol ^LocalDate date]
   (let [res (get-quotes stock-symbol date date)]
     (if (empty? res) nil (first res))))
 

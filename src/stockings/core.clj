@@ -6,15 +6,35 @@
   (:use [clojure.string :only (split join lower-case)]
         [clojure.contrib.def :only (defvar defvar-)])
   (:require [stockings.yql :as yql])
-  (:import (org.joda.time LocalDate)))
+  (:import (org.joda.time LocalDate LocalTime DateTimeZone)
+           (java.util TimeZone)))
 
-(defn- #^String strip-stock-symbol
+(defn- ^String strip-stock-symbol
   "Yahoo! Finance web services do not recognize stock symbols prefixed with
    a stock exchange; this function strips this prefix (if present) and
    returns a simple stock symbol. It is used by all the functions below
    to prepare queries that include stock symbols."
-  [#^String stock-symbol]
+  [^String stock-symbol]
   (last (split stock-symbol #":")))
+
+;;; NOTE: the date and time values returned by queries that are
+;;; resolved to http://download.yahoo.finance.com/d/quotes.csv are
+;;; wrong. It seems that the date is given for the UTC zone, but the
+;;; time is given for the America/New_York time zone.
+;;; The following code addresses the problem and assembles a correct
+;;; DateTime object in UTC from the date and time given.
+;;; You will want to use it if you are assembling a time stamp from
+;;; the LastTradeDate and LastTradeTime fields in the stock quotes
+;;; fetched by get-quotes or just use parse-last-trade-time-stamp.
+;;; WARNING: use it only for data retrieved from the quotes.csv
+;;; service above!
+
+(defvar- nyc-date-time-zone
+  (DateTimeZone/forTimeZone (TimeZone/getTimeZone "America/New_York")))
+
+(defn get-correct-time-stamp [^LocalDate date ^LocalTime time]
+  (let [wrong-time-stamp (.toDateTime date time nyc-date-time-zone)]
+    (.withFields (.toDateTime wrong-time-stamp DateTimeZone/UTC) date)))
 
 ;;;
 ;;; Get current quotes
@@ -79,6 +99,11 @@
   (if-let [value-parser (get quote-parse-map k)]
     (value-parser (get raw-quote k))))
 
+(defn parse-last-trade-time-stamp [raw-quote]
+  (let [date (parse-quote-item raw-quote :LastTradeDate)
+        time (parse-quote-item raw-quote :LastTradeTime)]
+    (get-correct-time-stamp date time)))
+
 (defn build-quote-parser [key-map]
   (fn [raw-quote]
     (apply hash-map
@@ -94,8 +119,12 @@
    :day-low :DaysLow
    :volume :Volume})
 
-(defvar default-quote-parser
-  (build-quote-parser default-key-map))
+(defvar- default-quote-parser* (build-quote-parser default-key-map))
+
+(defn default-quote-parser [raw-quote]
+  (let [stock-quote (default-quote-parser* raw-quote)]
+    (assoc stock-quote
+      :last-trade-time-stamp (parse-last-trade-time-stamp raw-quote))))
 
 (defn- wrap-error-check [parser]
   (fn [r]
@@ -118,7 +147,7 @@
 ;;;
 
 ;;; FIXME: consider using type annotations for the double and int/long fields!
-(defrecord HistoricalQuote [#^LocalDate date open high low close volume])
+(defrecord HistoricalQuote [^LocalDate date open high low close volume])
 
 (defn- parse-historical-quote [r]
   (let [date (yql/parse-date (:date r))
@@ -130,7 +159,7 @@
     (HistoricalQuote. date open high low close volume)))
 
 (defn get-historical-quotes
-  [#^String stock-symbol #^LocalDate start-date #^LocalDate end-date]
+  [^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
   (let [query (str "select * from yahoo.finance.historicaldata where symbol = "
                    (yql/yql-string (strip-stock-symbol stock-symbol))
                    " and startDate = " (yql/yql-string start-date)
@@ -149,7 +178,7 @@
    Note that in this latter case, performance will be slower."
   [quotes]
   (let [m (apply sorted-map (mapcat (fn [q] [(:date q) q]) quotes))]
-    (fn [#^LocalDate date & [closest-match?]]
+    (fn [^LocalDate date & [closest-match?]]
       (if closest-match?
         (if-let [lte-part (rsubseq m <= date)]
           (val (first lte-part)))
@@ -215,12 +244,16 @@
           quote-currency (keyword (lower-case (subs id 3 6)))
           rate (yql/parse-double (:Rate r))
           ask (yql/parse-double (:Ask r))
-          bid (yql/parse-double (:Bid r))]
+          bid (yql/parse-double (:Bid r))
+          date (yql/parse-date (:Date r))
+          time (yql/parse-time (:Time r))
+          time-stamp (get-correct-time-stamp date time)]
       {:base base-currency
        :quote quote-currency
        :rate rate
        :ask ask
-       :bid bid})))
+       :bid bid
+       :time-stamp time-stamp})))
 
 (defn get-xchange [base-currency quote-currency]
   (let [query (str "select * from yahoo.finance.xchange where pair = \""

@@ -62,7 +62,7 @@
    The qualified stock symbol consists of the short name of the market
    exchange where the company is listed, followed by the ':' character,
    followed by the stock symbol."
-  [#^Company company]
+  [^Company company]
   (str (:short-name (exchanges (:exchange company)))
        ":"
        (:stock-symbol company)))
@@ -74,7 +74,7 @@
    second item is the keyword for the stock exchange (e.g. [\"GOOG\" :nasdaq]).
    If the stock exchange was not specified, the second item of the returned
    vector will be nil."
-  [#^String stock-symbol]
+  [^String stock-symbol]
   (let [[stock-symbol exchange-symbol] (vec (reverse (split stock-symbol #":")))]
     [(upper-case stock-symbol)
      (if exchange-symbol (keyword (lower-case exchange-symbol)))]))
@@ -109,7 +109,7 @@
 (defn parse-companies
   "Parses a string of CSV-encoded companies and returns them
    as a sequence of Company records."
-  [exchange-key #^String s]
+  [exchange-key ^String s]
   (->> s
        parse-csv
        rest
@@ -145,7 +145,7 @@
    returns a vector of the matches; if no matches are found, it returns nil."
   [companies]
   (let [m (build-companies-map companies)]
-    (fn [#^String stock-symbol]
+    (fn [^String stock-symbol]
       (let [[stock-symbol exchange-key] (normalize-stock-symbol stock-symbol)
             res (get m stock-symbol)]
         (if exchange-key

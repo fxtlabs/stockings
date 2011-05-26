@@ -16,10 +16,10 @@
 (defn yql-string-list [vs]
   (str "(" (join "," (map yql-string vs)) ")"))
 
-(defn- strip-wrapper [#^String s]
+(defn- strip-wrapper [^String s]
   (subs s 8 (dec (count s))))
 
-(defn submit-query [#^String query]
+(defn submit-query [^String query]
   (let [params {:q query
                 :format "json"
                 :env "http://datatables.org/alltables.env"
@@ -67,11 +67,25 @@
 ;;; FIXME: not implemented yet! They should return a DateTime object.
 (defn parse-time [s] s)
 
-(defvar- date-parser (DateTimeFormat/forPattern "yyyy-MM-dd"))
+(defvar- date-parsers
+  [(DateTimeFormat/forPattern "yyyy-MM-dd")
+   (DateTimeFormat/forPattern "M/dd/yyyy")])
 
 (defn parse-date
   "Parse a string representing a date into a org.joda.time.LocalDate object."
-  [#^String s]
+  [^String s]
   (if s
-    (.toLocalDate (.parseDateTime date-parser s))))
+    (first
+     (for [parser date-parsers
+           :let [d (try (.parseDateTime parser s) (catch Exception _ nil))]
+           :when d]
+       (.toLocalDate d)))))
+
+(defvar- time-parser (DateTimeFormat/forPattern "hh:mmaa"))
+
+(defn parse-time
+  "Parse a string representing a time into a org.joda.time.LocalTime object."
+  [^String s]
+  (if s
+    (.toLocalTime (.parseDateTime time-parser s))))
 

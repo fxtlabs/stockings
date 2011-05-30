@@ -17,6 +17,27 @@
   [^String stock-symbol]
   (last (split stock-symbol #":")))
 
+(defn get-largest-lte
+  "Returns the value mapped to the largest key that is less than or
+   equal to the supplied key; returns not-found or nil if a matching key
+   cannot be found. The supplied map should be a sorted-map
+   (clojure.lang.TreeMap). You can use this function to lookup historical
+   stock quotes by date and still get a valid quote when the date falls on
+   a weekend or holiday. Use to-sorted-map to create a sorted map from a
+   sequence of historical quotes."
+  ([^clojure.lang.Sorted map key] (get-largest-lte map key nil))
+  ([^clojure.lang.Sorted map key not-found]
+     (if-let [lte-part (rsubseq map <= key)]
+       (val (first lte-part))
+       not-found)))
+
+(defn to-sorted-map
+  "Builds a sorted map from the supplied collection. The supplied get-key
+   function is used to compute the key corresponding to a given item
+   in the collection."
+  [get-key xs]
+  (apply sorted-map (mapcat (fn [x] [(get-key x) x]) xs)))
+
 ;;; NOTE: the date and time values returned by queries that are
 ;;; resolved to http://download.yahoo.finance.com/d/quotes.csv are
 ;;; wrong. It seems that the date is given for the UTC zone, but the
@@ -174,22 +195,6 @@
     (if result
       (yql/map-parser parse-historical-quote (:quote result)))))
 
-(defn build-historical-quotes-lookup
-  "Takes a sequence of historical quotes for a stock and returns a
-   function that looks up those historical quotes by date. This lookup
-   function will normally return nil if there is no quote for the requested
-   date; however, if called with an optional second parameter set to a
-   truthy value, the lookup function will return the quote for the closest
-   earlier date if a quote for the exact date is not available.
-   Note that in this latter case, performance will be slower."
-  [quotes]
-  (let [m (apply sorted-map (mapcat (fn [q] [(:date q) q]) quotes))]
-    (fn [^LocalDate date & [closest-match?]]
-      (if closest-match?
-        (if-let [lte-part (rsubseq m <= date)]
-          (val (first lte-part)))
-        (get m date)))))
-
 ;;;
 ;;; Get stocks
 ;;;
@@ -246,7 +251,7 @@
 ;;; Get current exchange rate
 ;;;
 
-(defn- parse-xchange [r]
+(defn- parse-exchange-rate [r]
   ;; If the requested currency pair could not be found, the
   ;; value of the :Name key will be suffixed with "=X"
   ;; (in this case, the parser returns nil).
@@ -267,7 +272,7 @@
        :bid bid
        :date-time date-time})))
 
-(defn get-xchanges [& currency-pairs]
+(defn get-exchange-rates [& currency-pairs]
   (if currency-pairs
     (let [pairs (map (fn [[base-currency quote-currency]]
                        (str (name base-currency)
@@ -275,8 +280,8 @@
           query (str "select * from yahoo.finance.xchange where pair in "
                      (yql/yql-string-list pairs))
           result (yql/submit-query query)]
-      (yql/map-parser parse-xchange (:rate result)))))
+      (yql/map-parser parse-exchange-rate (:rate result)))))
 
-(defn get-xchange [base-currency quote-currency]
-  (first (get-xchanges [base-currency quote-currency])))
+(defn get-exchange-rate [base-currency quote-currency]
+  (first (get-exchange-rates [base-currency quote-currency])))
 

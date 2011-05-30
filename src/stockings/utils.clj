@@ -1,4 +1,4 @@
-(ns stockings.yql
+(ns stockings.utils
   "Helper functions to access data through the YQL Web Service (Yahoo! Query Language)."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (join)]
@@ -19,7 +19,7 @@
 (defn- strip-wrapper [^String s]
   (subs s 8 (dec (count s))))
 
-(defn submit-query [^String query]
+(defn submit-yql-query [^String query]
   (let [params {:q query
                 :format "json"
                 :env "http://datatables.org/alltables.env"

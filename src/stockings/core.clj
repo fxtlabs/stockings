@@ -7,7 +7,7 @@
         [clojure.contrib.def :only (defvar defvar-)]
         [clojure.contrib.json :only (read-json)])
   (:require [clj-http.client :as client]
-            [stockings.yql :as yql])
+            [stockings.utils :as yql])
   (:import (org.joda.time LocalDate LocalTime DateTimeZone)
            (java.util TimeZone)))
 
@@ -180,7 +180,7 @@
     (if stock-symbols
       (let [query (str "select * from yahoo.finance.quotes where symbol in "
                        (yql/yql-string-list (map bare-stock-symbol stock-symbols)))
-            result (yql/submit-query query)]
+            result (yql/submit-yql-query query)]
         (yql/map-parser (wrap-error-check parser) (:quote result))))))
 
 (defn get-quote
@@ -209,7 +209,7 @@
                    (yql/yql-string (bare-stock-symbol stock-symbol))
                    " and startDate = " (yql/yql-string start-date)
                    " and endDate = " (yql/yql-string end-date))
-        result (yql/submit-query query)]
+        result (yql/submit-yql-query query)]
     (if result
       (yql/map-parser parse-historical-quote (:quote result)))))
 
@@ -240,7 +240,7 @@
   (if stock-symbols
     (let [query (str "select * from yahoo.finance.stocks where symbol in "
                      (yql/yql-string-list (map bare-stock-symbol stock-symbols)))
-          result (yql/submit-query query)]
+          result (yql/submit-yql-query query)]
       (yql/map-parser parse-stock (:stock result)))))
 
 (defn get-stock [stock-symbol]
@@ -255,7 +255,7 @@
 
 (defn get-industry-sectors []
   (let [query "select * from yahoo.finance.sectors"
-        result (yql/submit-query query)]
+        result (yql/submit-yql-query query)]
     (yql/map-parser parse-industry-sector (:sector result))))
 
 (defn- parse-industry [{:keys [id name company]}]
@@ -265,7 +265,7 @@
   (if industry-ids
     (let [query (str "select * from yahoo.finance.industry where id in "
                   (yql/yql-string-list industry-ids))
-          result (yql/submit-query query)]
+          result (yql/submit-yql-query query)]
       (yql/map-parser parse-industry (:industry result)))))
 
 (defn get-industry [industry-id]
@@ -303,7 +303,7 @@
                             (name quote-currency))) currency-pairs)
           query (str "select * from yahoo.finance.xchange where pair in "
                      (yql/yql-string-list pairs))
-          result (yql/submit-query query)]
+          result (yql/submit-yql-query query)]
       (yql/map-parser parse-exchange-rate (:rate result)))))
 
 (defn get-exchange-rate [base-currency quote-currency]
@@ -327,4 +327,5 @@
       (throw (RuntimeException. (str "Response status: " status))))
     (let [result (-> response :body strip-wrapper read-json :ResultSet :Result)]
       (if-not (empty? result) result))))
+
 

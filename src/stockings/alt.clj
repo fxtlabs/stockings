@@ -2,10 +2,10 @@
   "Alternative functions for getting and parsing historical stock quotes."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (join split-lines lower-case)]
-        [clojure.contrib.def :only (defvar-)])
+        [clojure.contrib.def :only (defvar-)]
+        [stockings.utils :only (parse-double parse-int)])
   (:require [clojure.xml :as xml]
-            [clj-http.client :as client]
-            [stockings.yql :as yql])
+            [clj-http.client :as client])
   (:import (java.net URLEncoder)
            (java.io ByteArrayInputStream)
            (org.joda.time DateTime LocalDate DateTimeZone)
@@ -40,17 +40,17 @@
        :exchange (:exchange raw-map)
        :name (:company raw-map)
        :currency (parse-keyword (:currency raw-map))
-       :previous-close (yql/parse-double (:y_close raw-map))
-       :open (yql/parse-double (:open raw-map))
-       :low (yql/parse-double (:low raw-map))
-       :high (yql/parse-double (:high raw-map))
-       :last (yql/parse-double (:last raw-map))
+       :previous-close (parse-double (:y_close raw-map))
+       :open (parse-double (:open raw-map))
+       :low (parse-double (:low raw-map))
+       :high (parse-double (:high raw-map))
+       :last (parse-double (:last raw-map))
        :last-date-time (parse-date-time (:trade_date_utc raw-map)
                                         (:trade_time_utc raw-map))
-       :change (yql/parse-double (:change raw-map))
-       :percent-change (/ (yql/parse-double (:perc_change raw-map)) 100.0)
-       :volume (yql/parse-int (:volume raw-map))
-       :avg-volume (yql/parse-double (:avg_volume raw-map))})))
+       :change (parse-double (:change raw-map))
+       :percent-change (/ (parse-double (:perc_change raw-map)) 100.0)
+       :volume (parse-int (:volume raw-map))
+       :avg-volume (parse-double (:avg_volume raw-map))})))
 
 (defn- build-quotes-query-string [stock-symbols]
   (join "&" (map (fn [s] (str "stock=" (URLEncoder/encode s "UTF-8")))

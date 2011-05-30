@@ -1,5 +1,5 @@
 (defproject com.fxtlabs/stockings "1.0.0-SNAPSHOT"
-  :description "Get current and historical stock quotes."
+  :description "Easy access to financial data: stock quotes, exchange rates, industry sectors, companies, and more."
   :url "https://github.com/fxtlabs/stockings"
   :dependencies [[org.clojure/clojure "1.2.1"]
                  [joda-time "1.6"]
@@ -14,7 +14,7 @@
             :comments "same as Clojure"}
   :autodoc 
   {:name "Stockings"
-   :description "Get current and historical stock quotes."
+   :description "Easy access to financial data: stock quotes, exchange rates, industry sectors, companies, and more."
    :copyright "Copyright 2011 Filippo Tampieri"
    :root "."
    :source-path "src"

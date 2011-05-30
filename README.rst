@@ -173,6 +173,8 @@ gets the current exchange rate from a base currency (USD) to a quote (or
 counter) currency (EUR). The currencies are denoted by their ISO 4217
 3-letter designators used as strings or keywords. In other words:
 
+::
+
   user> (get-exchange-rate "USD" "EUR")
 
 also works as above.

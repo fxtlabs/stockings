@@ -251,7 +251,7 @@
 ;;;
 
 (defn- parse-industry-sector [{:keys [name industry]}]
-  {:name name, :industries industry})
+  {:name name, :industries (if (vector? industry) industry [industry])})
 
 (defn get-industry-sectors []
   (let [query "select * from yahoo.finance.sectors"
@@ -259,7 +259,8 @@
     (yql/map-parser parse-industry-sector (:sector result))))
 
 (defn- parse-industry [{:keys [id name company]}]
-  {:id id, :name name, :companies company})
+  (if id
+    {:id id, :name name, :companies (if (vector? company) company [company])}))
 
 (defn get-industries [& industry-ids]
   (if industry-ids

@@ -36,9 +36,9 @@
     ;; value of the :company key will be empty
     ;; (in this case, the parser returns nil).
     (if-not (empty? (:company raw-map))
-      {:stock-symbol (:symbol raw-map)
+      {:symbol (:symbol raw-map)
        :exchange (:exchange raw-map)
-       :company-name (:company raw-map)
+       :name (:company raw-map)
        :currency (parse-keyword (:currency raw-map))
        :previous-close (yql/parse-double (:y_close raw-map))
        :open (yql/parse-double (:open raw-map))

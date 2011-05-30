@@ -3,25 +3,24 @@
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (split lower-case upper-case)]
         [clojure.contrib.def :only (defvar defvar-)]
-        [clojure-csv.core :only (parse-csv)])
+        [clojure-csv.core :only (parse-csv)]
+        [stockings.core :only (explode-stock-symbol)])
   (:require [clj-http.client :as client]))
 
 ;;;
 ;;; Stock Exchanges
 ;;;
 
-(defrecord StockExchange [key name short-name])
-
 (defvar nasdaq
-  (StockExchange. :nasdaq "NASDAQ Stock Market" "NASDAQ")
+  {:name "NASDAQ Stock Market", :symbol "NASDAQ"}
   "A StockExchange object describing the NASDAQ Stock Market (NASDAQ).")
 
 (defvar nyse
-  (StockExchange. :nyse "New York Stock Exchange" "NYSE")
+  {:name  "New York Stock Exchange", :symbol "NYSE"}
   "A StockExchange object describing the New York Stock Exchange (NYSE).")
 
 (defvar amex
-  (StockExchange. :amex "NYSE Amex Equities" "AMEX")
+  {:name "NYSE Amex Equities", :symbol "AMEX"}
   "A StockExchange object describing the NYSE Amex Equities (AMEX).")
 
 (defvar exchanges
@@ -55,29 +54,7 @@
 
 (defvar- source-url "http://www.nasdaq.com/screening/companies-by-name.aspx")
 
-(defrecord Company [exchange stock-symbol name ipo-year sector industry])
-
-(defn qualified-stock-symbol
-  "Returns the qualified stock symbol for the supplied company.
-   The qualified stock symbol consists of the short name of the market
-   exchange where the company is listed, followed by the ':' character,
-   followed by the stock symbol."
-  [^Company company]
-  (str (:short-name (exchanges (:exchange company)))
-       ":"
-       (:stock-symbol company)))
-
-(defn normalize-stock-symbol
-  "Takes a string denoting a (possibly qualified) stock symbol in the form
-   \"GOOG\" or \"NASDAQ:GOOG\" and breaks it down into its components.
-   It returns a vector where the first item is the stock symbol and the
-   second item is the keyword for the stock exchange (e.g. [\"GOOG\" :nasdaq]).
-   If the stock exchange was not specified, the second item of the returned
-   vector will be nil."
-  [^String stock-symbol]
-  (let [[stock-symbol exchange-symbol] (vec (reverse (split stock-symbol #":")))]
-    [(upper-case stock-symbol)
-     (if exchange-symbol (keyword (lower-case exchange-symbol)))]))
+(defrecord Company [exchange symbol name ipo-year sector industry])
 
 (defn- valid-record?
   "A predicate that returns true if the given CSV record is well formed.
@@ -130,11 +107,16 @@
 
 (defn- build-companies-map [companies]
   (letfn [(merge-entry [m c]
-                       (let [k (:stock-symbol c)]
+                       (let [k (:symbol c)]
                          (if-let [v (get m k)]
                            (assoc m k (if (vector? v) (conj v c) [vector v c]))
                            (assoc m k c))))]
     (reduce merge-entry {} companies)))
+
+(defn- normalize-stock-symbol [^String stock-symbol]
+  (let [[exchange-symbol stock-symbol] (explode-stock-symbol stock-symbol)]
+    [(if exchange-symbol (keyword (lower-case exchange-symbol)))
+     (upper-case stock-symbol)]))
 
 (defn build-lookup
   "Builds a lookup function corresponding to the supplied list of companies
@@ -146,7 +128,7 @@
   [companies]
   (let [m (build-companies-map companies)]
     (fn [^String stock-symbol]
-      (let [[stock-symbol exchange-key] (normalize-stock-symbol stock-symbol)
+      (let [[exchange-key stock-symbol] (normalize-stock-symbol stock-symbol)
             res (get m stock-symbol)]
         (if exchange-key
           (if (vector? res)

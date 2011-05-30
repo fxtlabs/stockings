@@ -9,13 +9,29 @@
   (:import (org.joda.time LocalDate LocalTime DateTimeZone)
            (java.util TimeZone)))
 
-(defn- ^String strip-stock-symbol
-  "Yahoo! Finance web services do not recognize stock symbols prefixed with
-   a stock exchange; this function strips this prefix (if present) and
-   returns a simple stock symbol. It is used by all the functions below
-   to prepare queries that include stock symbols."
-  [^String stock-symbol]
+;;; NOTES
+
+;;; Yahoo! Finance web services do not recognize stock symbols prefixed with
+;;; a stock exchange, so we always strip it before passing the symbols
+;;; to the web queries.
+
+;;;
+;;; Utilities
+;;;
+
+(defn bare-stock-symbol [^String stock-symbol]
   (last (split stock-symbol #":")))
+
+(defn prefix-stock-symbol [^String exchange-symbol ^String stock-symbol]
+  (if exchange-symbol
+    (str exchange-symbol ":" stock-symbol)
+    stock-symbol))
+
+(defn explode-stock-symbol [^String stock-symbol]
+  (let [[s exchange symbol] (re-matches #"(.*):(.*)" stock-symbol)]
+    (if s
+      [exchange symbol]
+      [nil stock-symbol])))
 
 (defn get-largest-lte
   "Returns the value mapped to the largest key that is less than or
@@ -133,8 +149,8 @@
            (mapcat (fn [[k v]] [k (parse-quote-item raw-quote v)]) key-map))))
 
 (defvar- default-key-map
-  {:stock-symbol :symbol
-   :company-name :Name
+  {:symbol :symbol
+   :name :Name
    :last :LastTradePriceOnly
    :open :Open
    :previous-close :PreviousClose
@@ -161,7 +177,7 @@
                                                               stock-symbols)])]
     (if stock-symbols
       (let [query (str "select * from yahoo.finance.quotes where symbol in "
-                       (yql/yql-string-list (map strip-stock-symbol stock-symbols)))
+                       (yql/yql-string-list (map bare-stock-symbol stock-symbols)))
             result (yql/submit-query query)]
         (yql/map-parser (wrap-error-check parser) (:quote result))))))
 
@@ -188,7 +204,7 @@
 (defn get-historical-quotes
   [^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
   (let [query (str "select * from yahoo.finance.historicaldata where symbol = "
-                   (yql/yql-string (strip-stock-symbol stock-symbol))
+                   (yql/yql-string (bare-stock-symbol stock-symbol))
                    " and startDate = " (yql/yql-string start-date)
                    " and endDate = " (yql/yql-string end-date))
         result (yql/submit-query query)]
@@ -210,8 +226,8 @@
           sector (:Sector r)
           industry (:Industry r)
           full-time-employees (yql/parse-int (:FullTimeEmployees r))]
-      {:stock-symbol stock-symbol
-       :company-name company-name
+      {:symbol stock-symbol
+       :name company-name
        :start-date start-date
        :end-date end-date
        :sector sector
@@ -221,7 +237,7 @@
 (defn get-stocks [& stock-symbols]
   (if stock-symbols
     (let [query (str "select * from yahoo.finance.stocks where symbol in "
-                     (yql/yql-string-list (map strip-stock-symbol stock-symbols)))
+                     (yql/yql-string-list (map bare-stock-symbol stock-symbols)))
           result (yql/submit-query query)]
       (yql/map-parser parse-stock (:stock result)))))
 
@@ -232,17 +248,23 @@
 ;;; Industries
 ;;;
 
+(defn- parse-industry-sector [{:keys [name industry]}]
+  {:name name, :industries industry})
+
 (defn get-industry-sectors []
   (let [query "select * from yahoo.finance.sectors"
         result (yql/submit-query query)]
-    (:sector result)))
+    (yql/map-parser parse-industry-sector (:sector result))))
+
+(defn- parse-industry [{:keys [id name company]}]
+  {:id id, :name name, :companies company})
 
 (defn get-industries [& industry-ids]
   (if industry-ids
     (let [query (str "select * from yahoo.finance.industry where id in "
                   (yql/yql-string-list industry-ids))
           result (yql/submit-query query)]
-      (yql/map-parser identity (:industry result)))))
+      (yql/map-parser parse-industry (:industry result)))))
 
 (defn get-industry [industry-id]
   (first (get-industries industry-id)))

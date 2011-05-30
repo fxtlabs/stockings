@@ -72,8 +72,9 @@
   (DateTimeZone/forTimeZone (TimeZone/getTimeZone "America/New_York")))
 
 (defn get-correct-date-time [^LocalDate date ^LocalTime time]
-  (let [wrong-date-time (.toDateTime date time nyc-date-time-zone)]
-    (.withFields (.toDateTime wrong-date-time DateTimeZone/UTC) date)))
+  (if (and date time)
+    (let [wrong-date-time (.toDateTime date time nyc-date-time-zone)]
+      (.withFields (.toDateTime wrong-date-time DateTimeZone/UTC) date))))
 
 ;;;
 ;;; Get current quotes

@@ -4,8 +4,10 @@
    from Yahoo! Finance."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (split join lower-case)]
-        [clojure.contrib.def :only (defvar defvar-)])
-  (:require [stockings.yql :as yql])
+        [clojure.contrib.def :only (defvar defvar-)]
+        [clojure.contrib.json :only (read-json)])
+  (:require [clj-http.client :as client]
+            [stockings.yql :as yql])
   (:import (org.joda.time LocalDate LocalTime DateTimeZone)
            (java.util TimeZone)))
 
@@ -306,4 +308,23 @@
 
 (defn get-exchange-rate [base-currency quote-currency]
   (first (get-exchange-rates [base-currency quote-currency])))
+
+;;;
+;;; Get stock symbol suggestion
+;;;
+
+(defn- strip-wrapper [^String s]
+  (let [[s json-string] (re-matches #"YAHOO\.Finance.SymbolSuggest\.ssCallback\((.*)\)" s)]
+    json-string))
+
+(defn get-symbol-suggestion [^String company-name]
+  (let [params {:query company-name
+                :callback "YAHOO.Finance.SymbolSuggest.ssCallback"}
+        response (client/get "http://autoc.finance.yahoo.com/autoc"
+                             {:query-params params})
+        status (:status response)]
+    (if (not= status 200)
+      (throw (RuntimeException. (str "Response status: " status))))
+    (let [result (-> response :body strip-wrapper read-json :ResultSet :Result)]
+      (if-not (empty? result) result))))
 

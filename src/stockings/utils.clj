@@ -1,5 +1,6 @@
 (ns stockings.utils
-  "Helper functions to access data through the YQL Web Service (Yahoo! Query Language)."
+  "Helper functions to access data through the YQL Web Service
+   (Yahoo! Query Language) and parse a variety of value types."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (join)]
         [clojure.contrib.def :only (defvar defvar-)]
@@ -10,16 +11,32 @@
 
 (defvar- yql-base-url "http://query.yahooapis.com/v1/public/yql")
 
-(defn yql-string [v]
+(defn yql-string
+  "String values in a YQL query must be enclosed in double quotes.
+   This function takes a value and returns it as a string wrapped in
+   escaped double quotes."
+  [v]
   (str "\"" v "\""))
 
-(defn yql-string-list [vs]
+(defn yql-string-list
+  "A list of string values in a YQL query is a comma-separated list
+   of strings, enclosed in parenthesis. Also, each string is wrapped
+   in double quotes. This function takes a sequence of values and
+   converts them in a list suitable for a YQL query."
+  [vs]
   (str "(" (join "," (map yql-string vs)) ")"))
 
 (defn- strip-wrapper [^String s]
   (subs s 8 (dec (count s))))
 
-(defn submit-yql-query [^String query]
+(defn submit-yql-query
+  "Takes a YQL query string and submit it to Yahoo!'s YQL service,
+   returning the value of the :result key in the JSON body of the
+   response as a Clojure map. It throws a RuntimeException if the
+   response status is anything other than 200 or if the JSON response
+   indicates an error (the error description is included in the
+   exception)."
+  [^String query]
   (let [params {:q query
                 :format "json"
                 :env "http://datatables.org/alltables.env"
@@ -36,7 +53,13 @@
         (throw (RuntimeException. (:description error))))
       (:results (:query payload)))))
 
-(defn map-parser [parser data]
+(defn map-parser
+  "Takes a parser and a data value. If the data is a vector, it maps the
+   parser to each item in the vector; otherwise, it simply calls the parser
+   on the data value. This function is useful to process the result
+   returned by submit-yql-query because YQL returns either a JSON object
+   or a vector depending on whether the query returns one or more results."
+  [parser data]
   (if (vector? data)
     (map parser data)
     (list (parser data))))
@@ -45,21 +68,36 @@
 ;;; Parsers
 ;;;
 
-(defn parse-int [s]
+(defn parse-int
+  "If the supplied string represents a valid integer, it returns its
+   value as an int; otherwise it returns nil."
+  [^String s]
   (if s
     (if-let [m (re-matches #"(?:\+|\-)?\d+" s)]
       (Integer/parseInt m 10))))
 
 (defvar- multipliers
   {"B" 1.0e9
-   "M" 1.0e6})
+   "M" 1.0e6
+   "K" 1.0e3})
 
-(defn parse-double [s]
+(defn parse-double
+  "If the supplied string represents a valid number in standard decimal
+   notation (e.g. 123.4 and not 1.234E2), it returns its value as a
+   double; otherwise it returns nil. The string can optionally end with
+   a letter K, M, or B indicating thousands, millions, or billions
+   respectively."
+  [^String s]
   (if s
-    (if-let [m (re-matches #"((?:\+|\-)?\d+(?:\.\d*)?)(B|M)?" s)]
+    (if-let [m (re-matches #"((?:\+|\-)?\d+(?:\.\d*)?)(B|K|M)?" s)]
       (* (Double/parseDouble (nth m 1)) (get multipliers (nth m 2) 1.0)))))
 
-(defn parse-percent [s]
+(defn parse-percent
+  "If the supplied string represents a valid percentage in standard
+   decimal notation and ending with a % sign (e.g. 12.3%), it returns
+   its fractional value as a double (e.g. 12.3% becomes 0.123);
+   otherwise, it returns nil."
+  [^String s]
   (if s
     (if-let [m (re-matches #"((?:\+|\-)?\d+(?:\.\d*)?)%" s)]
       (/ (Double/parseDouble (second m)) 100.0))))
@@ -69,7 +107,9 @@
    (DateTimeFormat/forPattern "M/dd/yyyy")])
 
 (defn parse-date
-  "Parse a string representing a date into a org.joda.time.LocalDate object."
+  "If the supplied string represents a valid date in either of the
+   yyyy-MM-dd or M/dd/yyyy formats, it returns the date as an
+   org.joda.time.LocalDate object; otherwise, it returns nil."
   [^String s]
   (if s
     (first
@@ -81,7 +121,9 @@
 (defvar- time-parser (DateTimeFormat/forPattern "hh:mmaa"))
 
 (defn parse-time
-  "Parse a string representing a time into a org.joda.time.LocalTime object."
+  "If the supplied string represents a valid time in the hh:mmaa format
+   (e.g. 9:30pm), it returns the time as an org.joda.time.LocalTime object;
+   otherwise, it returns nil."
   [^String s]
   (if s
     (.toLocalTime (.parseDateTime time-parser s))))

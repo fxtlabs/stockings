@@ -1,9 +1,11 @@
 (ns stockings.alt
-  "Alternative functions for getting and parsing historical stock quotes."
+  "Alternative functions for getting current and historical stock quotes
+   from Google Stock."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (join split-lines)]
         [clojure.contrib.def :only (defvar-)]
-        [stockings.utils :only (parse-double parse-int parse-keyword)])
+        [stockings.utils :only (parse-double parse-int parse-keyword)]
+        [stockings.core :only (bare-stock-symbol)])
   (:require [clojure.xml :as xml]
             [clj-http.client :as client])
   (:import (java.net URLEncoder)
@@ -48,24 +50,42 @@
        :volume (parse-int (:volume raw-map))
        :avg-volume (parse-double (:avg_volume raw-map))})))
 
+;;; Note that we strip any exchange prefix from the stock symbol
+;;; because the Google service does not recognize them.
 (defn- build-quotes-query-string [stock-symbols]
-  (join "&" (map (fn [s] (str "stock=" (URLEncoder/encode s "UTF-8")))
-                 stock-symbols)))
+  (letfn [(to-param [s]
+                    (str "stock=" (URLEncoder/encode (bare-stock-symbol s)
+                                                     "UTF-8")))]
+    (join "&" (map to-param stock-symbols))))
 
-(defn get-quotes [& stock-symbols]
+(defn get-quotes
+  "Returns a sequence of stock quotes corresponding to the given stock
+   symbols. A stock quote is a map with :symbol, :exchange, :name,
+   :currency, :previous-close, :open, :low, :high, :last (trade),
+   :last-date-time, :change, :percent-change, :volume, and :avg-volume
+   keys. If data for a symbol cannot be found, its place in the result
+   sequence will be nil."
+  [& stock-symbols]
   (if stock-symbols
     (let [url (str "http://www.google.com/ig/api?"
                    (build-quotes-query-string stock-symbols))
           response (client/get url)
           status (:status response)]
       (if (not= status 200)
-        (throw (RuntimeException. (str "Response status: " status))))
+        (throw (Exception. (str status))))
       (let [input-stream (ByteArrayInputStream. (.getBytes (:body response)
                                                            "UTF-8"))
             payload (xml/parse input-stream)]
         (map parse-quote (:content payload))))))
 
-(defn get-quote [stock-symbol]
+(defn get-quote
+  "Returns the current stock quote corresponding to the supplied stock
+   symbol. The result is a map with :symbol, :exchange, :name,
+   :currency, :previous-close, :open, :low, :high, :last (trade),
+   :last-date-time, :change, :percent-change, :volume, and :avg-volume
+   keys. If data for the supplied stock symbol cannot be found, it
+   returns nil."
+  [stock-symbol]
   (first (get-quotes stock-symbol)))
 
 ;;;
@@ -109,7 +129,9 @@
 
 (defn parse-historical-quotes
   "Parses a string of CSV-encoded historical stock quotes and returns them
-   as a sequence of HistoricalQuote records."
+   as a sequence of HistoricalQuote records. It expects one quote per line
+   with fields for date, open, high, low, close, and volume. The first line
+   is assumed to be column headers and is discarded."
   [^String s]
   (->> s
        split-lines
@@ -118,20 +140,36 @@
        (filter valid-record?)
        (map convert-record)))
 
+(defn- get-historical-quotes*
+  "Tries to get historical quotes from Google Finance. If the request fails
+   with a 400 status code, it means the stock symbol could not be found or
+   the dates were invalid; in this case, it just returns nil; otherwise, it
+   rethrows the exception."
+  [params]
+   (try
+     (client/get "http://www.google.com/finance/historical"
+                 {:query-params params})
+     (catch Exception e
+       (let [status (parse-int (.getMessage e))]
+         (if-not (= status 400)
+           (throw e))))))
+
 (defn get-historical-quotes
-  "Returns a sequence of historical stock quotes for the supplied stock
-   symbol. The symbol can optionally be prefixed by the stock exchange
-   (e.g. \"GOOG\" or \"NASDAQ:GOOG\"). A start and end date must also
-   be provided to constrain the range of historical quotes returned."
+  "Returns a sequence of historical stock quotes corresponding to the
+   supplied stock symbol, one quote per day between the supplied start
+   and end dates (as org.joda.time.LocalDate objects). Quotes
+   corresponding to dates falling on weekends and holidays are not
+   included in the resulting sequence. If quotes for the given symbol
+   or period cannot be found, it returns nil. The supplied stock symbol
+   can have an optional exchange prefix (.e.g \"GOOG\" or \"NASDAQ:GOOG\")." 
   [^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
   (let [params {:q stock-symbol
                 :startdate (str start-date)
                 :enddate (str end-date)
                 :output "csv"}
-        response (client/get "http://www.google.com/finance/historical"
-                             {:query-params params})
-        status (:status response)]
-    (if (not= status 200)
-      (throw (RuntimeException. (str "Response status: " status))))
-    (parse-historical-quotes (:body response))))
+        response (get-historical-quotes* params)]
+    (when response
+      (if (not= (:status response) 200)
+        (throw (Exception. (str (:status response)))))
+      (parse-historical-quotes (:body response)))))
 

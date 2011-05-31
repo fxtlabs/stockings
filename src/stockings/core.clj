@@ -443,7 +443,7 @@
                              {:query-params params})
         status (:status response)]
     (if (not= status 200)
-      (throw (RuntimeException. (str "Response status: " status))))
+      (throw (Exception. (str status))))
     (let [result (-> response :body strip-wrapper read-json :ResultSet :Result)]
       (if-not (empty? result) result))))
 

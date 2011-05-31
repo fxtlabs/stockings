@@ -32,7 +32,7 @@
 (defn submit-yql-query
   "Takes a YQL query string and submit it to Yahoo!'s YQL service,
    returning the value of the :result key in the JSON body of the
-   response as a Clojure map. It throws a RuntimeException if the
+   response as a Clojure map. It throws an Exception if the
    response status is anything other than 200 or if the JSON response
    indicates an error (the error description is included in the
    exception)."
@@ -47,10 +47,10 @@
         response (client/get yql-base-url {:query-params params})
         status (:status response)]
     (if (not= status 200)
-      (throw (RuntimeException. (str "Response status: " status))))
+      (throw (Exception. (str status))))
     (let [payload (-> response :body strip-wrapper read-json)]
       (if-let [error (:error payload)]
-        (throw (RuntimeException. (:description error))))
+        (throw (Exception. (:description error))))
       (:results (:query payload)))))
 
 (defn map-parser

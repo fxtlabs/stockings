@@ -21,6 +21,7 @@
    :web-src-dir "https://github.com/fxtlabs/stockings/blob/"
    :web-home "http://stockings.fxtlabs.com"
    :output-path "autodoc"
+   :param-dir "autodoc-params"
    :namespaces-to-document ["stockings"]
    :load-except-list [#"/test/" #"project.clj"]})
 

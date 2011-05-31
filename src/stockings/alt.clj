@@ -1,9 +1,9 @@
 (ns stockings.alt
   "Alternative functions for getting and parsing historical stock quotes."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
-  (:use [clojure.string :only (join split-lines lower-case)]
+  (:use [clojure.string :only (join split-lines)]
         [clojure.contrib.def :only (defvar-)]
-        [stockings.utils :only (parse-double parse-int)])
+        [stockings.utils :only (parse-double parse-int parse-keyword)])
   (:require [clojure.xml :as xml]
             [clj-http.client :as client])
   (:import (java.net URLEncoder)
@@ -23,10 +23,6 @@
   [^String date ^String time]
   (if-not (or (empty? date) (empty? time))
     (.parseDateTime date-time-parser (str date time))))
-
-(defn- parse-keyword [s]
-  (if-not (empty? s)
-    (keyword (lower-case s))))
 
 (defn- parse-quote [raw-quote]
   (let [raw-map (apply hash-map

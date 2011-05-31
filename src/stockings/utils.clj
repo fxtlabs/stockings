@@ -2,7 +2,7 @@
   "Helper functions to access data through the YQL Web Service
    (Yahoo! Query Language) and parse a variety of value types."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
-  (:use [clojure.string :only (join)]
+  (:use [clojure.string :only (join lower-case)]
         [clojure.contrib.def :only (defvar defvar-)]
         [clojure.contrib.json :only (read-json)])
   (:require [clj-http.client :as client])
@@ -67,6 +67,13 @@
 ;;;
 ;;; Parsers
 ;;;
+
+(defn parse-keyword
+  "If the supplied string is not empty, it is returned as a lower-case
+   keyword; otherwise it returns nil."
+  [^String s]
+  (if-not (empty? s)
+    (keyword (lower-case s))))
 
 (defn parse-int
   "If the supplied string represents a valid integer, it returns its

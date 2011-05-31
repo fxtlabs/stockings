@@ -21,11 +21,6 @@
 ;;; Utilities
 ;;;
 
-(defn bare-stock-symbol
-  "Returns a stock symbol stripped of the stock exchange prefix, if any."
-  [^String stock-symbol]
-  (last (split stock-symbol #":")))
-
 (defn prefix-stock-symbol
   "Takes the symbols for a stock exchange and a stock and combines them
    to create an exchange-prefixed stock symbol (e.g. \"NASDAQ\" and
@@ -41,10 +36,15 @@
    exchange prefix is missing, the first entry in the vector will be
    nil."
   [^String stock-symbol]
-  (let [[s exchange symbol] (re-matches #"(.*):(.*)" stock-symbol)]
+  (let [[s exchange symbol] (re-matches #"(.+):(.+)" stock-symbol)]
     (if s
       [exchange symbol]
       [nil stock-symbol])))
+
+(defn bare-stock-symbol
+  "Returns a stock symbol stripped of the stock exchange prefix, if any."
+  [^String stock-symbol]
+  (second (explode-stock-symbol stock-symbol)))
 
 (defn get-largest-lte
   "Returns the value mapped to the largest key that is less than or

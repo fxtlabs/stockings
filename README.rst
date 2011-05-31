@@ -12,7 +12,7 @@ Usage
 
 The stockings library is hosted on clojars.org.
 
-Add ``[com.fxtlabs/stockings "1.0.0-SNAPSHOT"]`` to the dependencies
+Add ``[com.fxtlabs/stockings "1.0.0"]`` to the dependencies
 list in your ``project.clj`` file and run ``lein deps`` to download the
 library from the Clojars archives.
 

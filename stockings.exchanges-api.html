@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>stockings.exchanges API reference (Stockings)</title>
+    <meta content="Stockings is a Clojure library that gives you an easy to use API to access financial data: current and historical stock quotes, exchange rates, industry sectors, companies, stock symbol suggestions, and more." name="description" />
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -13,6 +14,19 @@
     <!--[if lte IE 6]>
     <link rel="stylesheet" href="http://www.wikispaces.com/_/2009051601/s/internal_ie.css" type="text/css" />
     <![endif]-->
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-23136276-2']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
   </head>
 <!--
 This document was auto-generated from the source by the clojure autodoc system.
@@ -34,7 +48,7 @@ namespace.
     <a class="wiki_link" href="api-index.html">API Index</a><br />
     <a class="wiki_link" href="#">Namespaces:</a>
     <ul id="left-sidebar-list">
-      <li><a href="stockings.core-api.html" class="wiki_link">stockings.core</a></li><li><a href="stockings.exchanges-api.html" class="wiki_link">stockings.exchanges</a></li><li><a href="stockings.historical-api.html" class="wiki_link">stockings.historical</a></li>
+      <li><a href="stockings.alt-api.html" class="wiki_link">stockings.alt</a></li><li><a href="stockings.core-api.html" class="wiki_link">stockings.core</a></li><li><a href="stockings.exchanges-api.html" class="wiki_link">stockings.exchanges</a></li><li><a href="stockings.utils-api.html" class="wiki_link">stockings.utils</a></li>
     </ul>
   </div>
 </div>
@@ -60,13 +74,9 @@ namespace.
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#stockings.exchanges/nasdaq">nasdaq</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#stockings.exchanges/normalize-stock-symbol">normalize-stock-symbol</a>
-    </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#stockings.exchanges/nyse">nyse</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#stockings.exchanges/parse-companies">parse-companies</a>
-    </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#stockings.exchanges/qualified-stock-symbol">qualified-stock-symbol</a>
     </div>
     <br />
   </div>
@@ -80,7 +90,9 @@ by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
   (:require <span id="long-name">stockings.exchanges</span>))
 </pre><pre>
 </pre><h2>Overview</h2>
-<pre id="namespace-docstr">Functions to get basic info on the AMEX, NASDAQ, and NYSE stock exchanges.</pre>
+<pre id="namespace-docstr">Functions to get a listing of the companies traded on the AMEX,
+NASDAQ, and NYSE stock exchanges. Based on the data made available
+by the NASDAQ at <a href="http://www.nasdaq.com/screening/company-list.aspx">http://www.nasdaq.com/screening/company-list.aspx</a>.</pre>
 <br />
 <h2>Public Variables and Functions</h2>
 <div id="var-entry">
@@ -89,8 +101,8 @@ by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
   <h2 id="stockings.exchanges/amex">amex</h2>
   <span id="var-type">var</span><br />
   <pre id="var-usage"></pre>
-  <pre id="var-docstr">A StockExchange object describing the NYSE Amex Equities (AMEX).</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/4014a4565eb82841ba08eaf78946164f13ab8cd2/src/stockings/exchanges.clj#L23" id="var-source">Source</a>
+  <pre id="var-docstr">A map describing the NYSE Amex Equities (AMEX).</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/730bd3931e4f1c46c0735205df3a5452e8133aab/src/stockings/exchanges.clj#L24" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -101,18 +113,18 @@ by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
   <pre id="var-docstr">Builds a lookup function corresponding to the supplied list of companies
 (a sequence of Company records). The lookup function takes a stock symbol
 and returns the Company record corresponding to it. The stock symbol may
-optionally be qualified with a stock exchange (e.g. "NASDAQ:GOOG").
+optionally be prefixed with a stock exchange (e.g. "NASDAQ:GOOG").
 If the stock exchange is not specified and multiple matches are found, it
 returns a vector of the matches; if no matches are found, it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/4014a4565eb82841ba08eaf78946164f13ab8cd2/src/stockings/exchanges.clj#L139" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/730bd3931e4f1c46c0735205df3a5452e8133aab/src/stockings/exchanges.clj#L133" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
   <h2 id="stockings.exchanges/exchanges">exchanges</h2>
   <span id="var-type">var</span><br />
   <pre id="var-usage"></pre>
-  <pre id="var-docstr">A map from stock exchange keywords to StockExchange objects.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/4014a4565eb82841ba08eaf78946164f13ab8cd2/src/stockings/exchanges.clj#L27" id="var-source">Source</a>
+  <pre id="var-docstr">A map from stock exchange keywords to stock exchange info maps.</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/730bd3931e4f1c46c0735205df3a5452e8133aab/src/stockings/exchanges.clj#L28" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -122,10 +134,11 @@ returns a vector of the matches; if no matches are found, it returns nil.</pre>
        (get-companies)
 </pre>
   <pre id="var-docstr">Requests a list of the companies traded on the stock exchange denoted by
-the supplied keyword. If not keyword is provided, it returns a merged list
+the supplied keyword. If no keyword is provided, it returns a merged list
 of the companies traded on the NASDAQ, NYSE, and AMEX exchanges.
-The companies are returned as a sequence of Company records.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/4014a4565eb82841ba08eaf78946164f13ab8cd2/src/stockings/exchanges.clj#L119" id="var-source">Source</a>
+The companies are returned as a sequence of Company records.
+See parse-companies for details.</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/730bd3931e4f1c46c0735205df3a5452e8133aab/src/stockings/exchanges.clj#L107" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -133,37 +146,23 @@ The companies are returned as a sequence of Company records.</pre>
   <span id="var-type">var</span><br />
   <pre id="var-usage"></pre>
   <pre id="var-docstr">A list of the major industry sectors as classified by the NASDAQ.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/4014a4565eb82841ba08eaf78946164f13ab8cd2/src/stockings/exchanges.clj#L37" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/730bd3931e4f1c46c0735205df3a5452e8133aab/src/stockings/exchanges.clj#L38" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
   <h2 id="stockings.exchanges/nasdaq">nasdaq</h2>
   <span id="var-type">var</span><br />
   <pre id="var-usage"></pre>
-  <pre id="var-docstr">A StockExchange object describing the NASDAQ Stock Market (NASDAQ).</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/4014a4565eb82841ba08eaf78946164f13ab8cd2/src/stockings/exchanges.clj#L15" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="stockings.exchanges/normalize-stock-symbol">normalize-stock-symbol</h2>
-  <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (normalize-stock-symbol stock-symbol)
-</pre>
-  <pre id="var-docstr">Takes a string denoting a (possibly qualified) stock symbol in the form
-"GOOG" or "NASDAQ:GOOG" and breaks it down into its components.
-It returns a vector where the first item is the stock symbol and the
-second item is the keyword for the stock exchange (e.g. ["GOOG" :nasdaq]).
-If the stock exchange was not specified, the second item of the returned
-vector will be nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/4014a4565eb82841ba08eaf78946164f13ab8cd2/src/stockings/exchanges.clj#L70" id="var-source">Source</a>
+  <pre id="var-docstr">A map describing the NASDAQ Stock Market (NASDAQ).</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/730bd3931e4f1c46c0735205df3a5452e8133aab/src/stockings/exchanges.clj#L16" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
   <h2 id="stockings.exchanges/nyse">nyse</h2>
   <span id="var-type">var</span><br />
   <pre id="var-usage"></pre>
-  <pre id="var-docstr">A StockExchange object describing the New York Stock Exchange (NYSE).</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/4014a4565eb82841ba08eaf78946164f13ab8cd2/src/stockings/exchanges.clj#L19" id="var-source">Source</a>
+  <pre id="var-docstr">A map describing the New York Stock Exchange (NYSE).</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/730bd3931e4f1c46c0735205df3a5452e8133aab/src/stockings/exchanges.clj#L20" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -172,20 +171,15 @@ vector will be nil.</pre>
   <pre id="var-usage">Usage: (parse-companies exchange-key s)
 </pre>
   <pre id="var-docstr">Parses a string of CSV-encoded companies and returns them
-as a sequence of Company records.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/4014a4565eb82841ba08eaf78946164f13ab8cd2/src/stockings/exchanges.clj#L109" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="stockings.exchanges/qualified-stock-symbol">qualified-stock-symbol</h2>
-  <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (qualified-stock-symbol company)
-</pre>
-  <pre id="var-docstr">Returns the qualified stock symbol for the supplied company.
-The qualified stock symbol consists of the short name of the market
-exchange where the company is listed, followed by the ':' character,
-followed by the stock symbol.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/4014a4565eb82841ba08eaf78946164f13ab8cd2/src/stockings/exchanges.clj#L60" id="var-source">Source</a>
+as a sequence of Company records. It expects one company record per
+line with the following fields: symbol, name, last sale, market
+capitalization, IPO year, sector, industry, and URL for summary quote.
+The first line is expected to contain the column headers and is discarded.
+The first parameter should be a key representing the exchange on which all
+the companies described in the input string are traded.
+The result includes exchange, symbol name, IPO year, sector, and
+industry for each company.</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/730bd3931e4f1c46c0735205df3a5452e8133aab/src/stockings/exchanges.clj#L90" id="var-source">Source</a>
 </div>
 
 
@@ -199,7 +193,7 @@ followed by the stock symbol.</pre>
 	</div>
       </div>
       <div id="DesignedBy">Logo &amp; site design by <a title="Visit Tom Hickey's website." href="http://www.tomhickey.com">Tom Hickey</a>.<br />
-      Clojure auto-documentation system by Tom Faulhaber.</div>
+      Clojure auto-documentation system not so by Tom Faulhaber.</div>
     </div>
     <!-- /AllContentContainer -->
   </body>

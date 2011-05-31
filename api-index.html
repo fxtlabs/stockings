@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Stockings - Index</title>
+    <meta content="Stockings is a Clojure library that gives you an easy to use API to access financial data: current and historical stock quotes, exchange rates, industry sectors, companies, stock symbol suggestions, and more." name="description" />
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -13,6 +14,19 @@
     <!--[if lte IE 6]>
     <link rel="stylesheet" href="http://www.wikispaces.com/_/2009051601/s/internal_ie.css" type="text/css" />
     <![endif]-->
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-23136276-2']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
   </head>
 <!--
 This document was auto-generated from the source by the clojure autodoc system.
@@ -34,7 +48,7 @@ namespace.
     <a class="wiki_link" href="api-index.html">API Index</a><br />
     <a class="wiki_link" href="#">Namespaces:</a>
     <ul id="left-sidebar-list">
-      <li><a href="stockings.core-api.html" class="wiki_link">stockings.core</a></li><li><a href="stockings.exchanges-api.html" class="wiki_link">stockings.exchanges</a></li><li><a href="stockings.historical-api.html" class="wiki_link">stockings.historical</a></li>
+      <li><a href="stockings.alt-api.html" class="wiki_link">stockings.alt</a></li><li><a href="stockings.core-api.html" class="wiki_link">stockings.core</a></li><li><a href="stockings.exchanges-api.html" class="wiki_link">stockings.exchanges</a></li><li><a href="stockings.utils-api.html" class="wiki_link">stockings.utils</a></li>
     </ul>
   </div>
 </div>
@@ -73,13 +87,14 @@ Shortcuts:<br />
 <div id="index-body">
   <h2 id="A"><span id="section-head">A</span></h2>
   <pre>
-<span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/amex">amex</a><span id="line-content">                         var           stockings.exchanges A StockExchange object describing the NYSE Amex E...
+<span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/amex">amex</a><span id="line-content">                         var           stockings.exchanges A map describing the NYSE Amex Equities (AMEX)..
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="B"><span id="section-head">B</span></h2>
   <pre>
-<span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/build-lookup">build-lookup</a><span id="line-content">                 function      stockings.exchanges Builds a lookup function corresponding to the sup...
-</span></span><span id="section-content"> <a href="stockings.historical-api.html#stockings.historical/build-lookup">build-lookup</a><span id="line-content">                 function      stockings.historical Takes a sequence of historical quotes for a stoc...
+<span id="section-content"> <a href="stockings.core-api.html#stockings.core/bare-stock-symbol">bare-stock-symbol</a><span id="line-content">            function      stockings.core     Returns a stock symbol stripped of the stock excha...
+</span></span><span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/build-lookup">build-lookup</a><span id="line-content">                 function      stockings.exchanges Builds a lookup function corresponding to the sup...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/build-quote-parser">build-quote-parser</a><span id="line-content">           function      stockings.core     Returns a parser that can be passed to get-quote a...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="C"><span id="section-head">C</span></h2>
@@ -88,11 +103,13 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="D"><span id="section-head">D</span></h2>
   <pre>
-</pre>
+<span id="section-content"> <a href="stockings.core-api.html#stockings.core/default-quote-parser">default-quote-parser</a><span id="line-content">         function      stockings.core     The quote parser used by get-quote and get-quotes ...
+</span></span></pre>
 </div><div id="index-body">
   <h2 id="E"><span id="section-head">E</span></h2>
   <pre>
-<span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/exchanges">exchanges</a><span id="line-content">                    var           stockings.exchanges A map from stock exchange keywords to StockExchan...
+<span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/exchanges">exchanges</a><span id="line-content">                    var           stockings.exchanges A map from stock exchange keywords to stock excha...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/explode-stock-symbol">explode-stock-symbol</a><span id="line-content">         function      stockings.core     Takes a stock symbol and explodes it into its exch...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="F"><span id="section-head">F</span></h2>
@@ -102,8 +119,18 @@ Shortcuts:<br />
   <h2 id="G"><span id="section-head">G</span></h2>
   <pre>
 <span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/get-companies">get-companies</a><span id="line-content">                function      stockings.exchanges Requests a list of the companies traded on the st...
-</span></span><span id="section-content"> <a href="stockings.historical-api.html#stockings.historical/get-quote">get-quote</a><span id="line-content">                    function      stockings.historical Returns the stock quotes for the supplied stock ...
-</span></span><span id="section-content"> <a href="stockings.historical-api.html#stockings.historical/get-quotes">get-quotes</a><span id="line-content">                   function      stockings.historical Returns a sequence of historical stock quotes fo...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-exchange-rate">get-exchange-rate</a><span id="line-content">            function      stockings.core     Returns the currency exchange rate for the supplie...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-exchange-rates">get-exchange-rates</a><span id="line-content">           function      stockings.core     Returns a sequence of currency exchange rate for a...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-historical-quotes">get-historical-quotes</a><span id="line-content">        function      stockings.core     Returns a sequence of historical stock quotes corr...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-industries">get-industries</a><span id="line-content">               function      stockings.core     Returns a sequence of the industries corresponding...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-industry">get-industry</a><span id="line-content">                 function      stockings.core     Returns the industry corresponding to the supplied...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-industry-sectors">get-industry-sectors</a><span id="line-content">         function      stockings.core     Returns a sequence of industry sectors. Each secto...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-largest-lte">get-largest-lte</a><span id="line-content">              function      stockings.core     Returns the value mapped to the largest key that i...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-quote">get-quote</a><span id="line-content">                    function      stockings.core     Returns the stock quote corresponding to the given...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-quotes">get-quotes</a><span id="line-content">                   function      stockings.core     Returns a sequence of stock quotes corresponding t...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-stock">get-stock</a><span id="line-content">                    function      stockings.core     Returns the stock description for the supplied sto...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-stocks">get-stocks</a><span id="line-content">                   function      stockings.core     Returns a sequence of stock descriptions for the s...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/get-symbol-suggestion">get-symbol-suggestion</a><span id="line-content">        function      stockings.core     Returns zero, one or more suggestions for the stoc...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="H"><span id="section-head">H</span></h2>
@@ -129,13 +156,13 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="M"><span id="section-head">M</span></h2>
   <pre>
-</pre>
+<span id="section-content"> <a href="stockings.utils-api.html#stockings.utils/map-parser">map-parser</a><span id="line-content">                   function      stockings.utils    Takes a parser and a data value. If the data is a ...
+</span></span></pre>
 </div><div id="index-body">
   <h2 id="N"><span id="section-head">N</span></h2>
   <pre>
-<span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/nasdaq">nasdaq</a><span id="line-content">                       var           stockings.exchanges A StockExchange object describing the NASDAQ Stoc...
-</span></span><span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/normalize-stock-symbol">normalize-stock-symbol</a><span id="line-content">       function      stockings.exchanges Takes a string denoting a (possibly qualified) st...
-</span></span><span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/nyse">nyse</a><span id="line-content">                         var           stockings.exchanges A StockExchange object describing the New York St...
+<span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/nasdaq">nasdaq</a><span id="line-content">                       var           stockings.exchanges A map describing the NASDAQ Stock Market (NASDAQ)...
+</span></span><span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/nyse">nyse</a><span id="line-content">                         var           stockings.exchanges A map describing the New York Stock Exchange (NYS...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="O"><span id="section-head">O</span></h2>
@@ -145,25 +172,35 @@ Shortcuts:<br />
   <h2 id="P"><span id="section-head">P</span></h2>
   <pre>
 <span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/parse-companies">parse-companies</a><span id="line-content">              function      stockings.exchanges Parses a string of CSV-encoded companies and retu...
-</span></span><span id="section-content"> <a href="stockings.historical-api.html#stockings.historical/parse-quotes">parse-quotes</a><span id="line-content">                 function      stockings.historical Parses a string of CSV-encoded historical stock ...
+</span></span><span id="section-content"> <a href="stockings.utils-api.html#stockings.utils/parse-date">parse-date</a><span id="line-content">                   function      stockings.utils    If the supplied string represents a valid date in ...
+</span></span><span id="section-content"> <a href="stockings.utils-api.html#stockings.utils/parse-double">parse-double</a><span id="line-content">                 function      stockings.utils    If the supplied string represents a valid number i...
+</span></span><span id="section-content"> <a href="stockings.utils-api.html#stockings.utils/parse-int">parse-int</a><span id="line-content">                    function      stockings.utils    If the supplied string represents a valid integer,...
+</span></span><span id="section-content"> <a href="stockings.utils-api.html#stockings.utils/parse-keyword">parse-keyword</a><span id="line-content">                function      stockings.utils    If the supplied string is not empty, it is returne...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/parse-last-trade-date-time">parse-last-trade-date-time</a><span id="line-content">   function      stockings.core     Looks up the last trade date and time in the suppl...
+</span></span><span id="section-content"> <a href="stockings.utils-api.html#stockings.utils/parse-percent">parse-percent</a><span id="line-content">                function      stockings.utils    If the supplied string represents a valid percenta...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/parse-quote-item">parse-quote-item</a><span id="line-content">             function      stockings.core     Looks up the value of a supplied key into a raw st...
+</span></span><span id="section-content"> <a href="stockings.utils-api.html#stockings.utils/parse-time">parse-time</a><span id="line-content">                   function      stockings.utils    If the supplied string represents a valid time in ...
+</span></span><span id="section-content"> <a href="stockings.core-api.html#stockings.core/prefix-stock-symbol">prefix-stock-symbol</a><span id="line-content">          function      stockings.core     Takes the symbols for a stock exchange and a stock...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="Q"><span id="section-head">Q</span></h2>
   <pre>
-<span id="section-content"> <a href="stockings.exchanges-api.html#stockings.exchanges/qualified-stock-symbol">qualified-stock-symbol</a><span id="line-content">       function      stockings.exchanges Returns the qualified stock symbol for the suppli...
-</span></span></pre>
+</pre>
 </div><div id="index-body">
   <h2 id="R"><span id="section-head">R</span></h2>
   <pre>
-</pre>
+<span id="section-content"> <a href="stockings.core-api.html#stockings.core/raw-quote-keys">raw-quote-keys</a><span id="line-content">               var           stockings.core     A list of all the keys available in a raw stock qu...
+</span></span></pre>
 </div><div id="index-body">
   <h2 id="S"><span id="section-head">S</span></h2>
   <pre>
-</pre>
+<span id="section-content"> <a href="stockings.utils-api.html#stockings.utils/submit-yql-query">submit-yql-query</a><span id="line-content">             function      stockings.utils    Takes a YQL query string and submit it to Yahoo!'s...
+</span></span></pre>
 </div><div id="index-body">
   <h2 id="T"><span id="section-head">T</span></h2>
   <pre>
-</pre>
+<span id="section-content"> <a href="stockings.core-api.html#stockings.core/to-sorted-map">to-sorted-map</a><span id="line-content">                function      stockings.core     Builds a sorted map from the supplied collection. ...
+</span></span></pre>
 </div><div id="index-body">
   <h2 id="U"><span id="section-head">U</span></h2>
   <pre>
@@ -183,7 +220,9 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="Y"><span id="section-head">Y</span></h2>
   <pre>
-</pre>
+<span id="section-content"> <a href="stockings.utils-api.html#stockings.utils/yql-string">yql-string</a><span id="line-content">                   function      stockings.utils    String values in a YQL query must be enclosed in d...
+</span></span><span id="section-content"> <a href="stockings.utils-api.html#stockings.utils/yql-string-list">yql-string-list</a><span id="line-content">              function      stockings.utils    A list of string values in a YQL query is a comma-...
+</span></span></pre>
 </div><div id="index-body">
   <h2 id="Z"><span id="section-head">Z</span></h2>
   <pre>
@@ -206,7 +245,7 @@ Shortcuts:<br />
 	</div>
       </div>
       <div id="DesignedBy">Logo &amp; site design by <a title="Visit Tom Hickey's website." href="http://www.tomhickey.com">Tom Hickey</a>.<br />
-      Clojure auto-documentation system by Tom Faulhaber.</div>
+      Clojure auto-documentation system not so by Tom Faulhaber.</div>
     </div>
     <!-- /AllContentContainer -->
   </body>

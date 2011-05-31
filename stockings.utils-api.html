@@ -110,7 +110,7 @@ parser to each item in the vector; otherwise, it simply calls the parser
 on the data value. This function is useful to process the result
 returned by submit-yql-query because YQL returns either a JSON object
 or a vector depending on whether the query returns one or more results.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/9076dc6ac54ca702d6458c0891789957c43dabca/src/stockings/utils.clj#L56" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L56" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -121,7 +121,7 @@ or a vector depending on whether the query returns one or more results.</pre>
   <pre id="var-docstr">If the supplied string represents a valid date in either of the
 yyyy-MM-dd or M/dd/yyyy formats, it returns the date as an
 org.joda.time.LocalDate object; otherwise, it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/9076dc6ac54ca702d6458c0891789957c43dabca/src/stockings/utils.clj#L116" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L116" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -134,7 +134,7 @@ notation (e.g. 123.4 and not 1.234E2), it returns its value as a
 double; otherwise it returns nil. The string can optionally end with
 a letter K, M, or B indicating thousands, millions, or billions
 respectively.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/9076dc6ac54ca702d6458c0891789957c43dabca/src/stockings/utils.clj#L91" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L91" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -144,7 +144,7 @@ respectively.</pre>
 </pre>
   <pre id="var-docstr">If the supplied string represents a valid integer, it returns its
 value as an int; otherwise it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/9076dc6ac54ca702d6458c0891789957c43dabca/src/stockings/utils.clj#L78" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L78" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -154,7 +154,7 @@ value as an int; otherwise it returns nil.</pre>
 </pre>
   <pre id="var-docstr">If the supplied string is not empty, it is returned as a lower-case
 keyword; otherwise it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/9076dc6ac54ca702d6458c0891789957c43dabca/src/stockings/utils.clj#L71" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L71" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -166,7 +166,7 @@ keyword; otherwise it returns nil.</pre>
 decimal notation and ending with a % sign (e.g. 12.3%), it returns
 its fractional value as a double (e.g. 12.3% becomes 0.123);
 otherwise, it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/9076dc6ac54ca702d6458c0891789957c43dabca/src/stockings/utils.clj#L102" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L102" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -177,7 +177,7 @@ otherwise, it returns nil.</pre>
   <pre id="var-docstr">If the supplied string represents a valid time in the hh:mmaa format
 (e.g. 9:30pm), it returns the time as an org.joda.time.LocalTime object;
 otherwise, it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/9076dc6ac54ca702d6458c0891789957c43dabca/src/stockings/utils.clj#L130" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L130" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -187,11 +187,11 @@ otherwise, it returns nil.</pre>
 </pre>
   <pre id="var-docstr">Takes a YQL query string and submit it to Yahoo!'s YQL service,
 returning the value of the :result key in the JSON body of the
-response as a Clojure map. It throws a RuntimeException if the
+response as a Clojure map. It throws an Exception if the
 response status is anything other than 200 or if the JSON response
 indicates an error (the error description is included in the
 exception).</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/9076dc6ac54ca702d6458c0891789957c43dabca/src/stockings/utils.clj#L32" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L32" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -202,7 +202,7 @@ exception).</pre>
   <pre id="var-docstr">String values in a YQL query must be enclosed in double quotes.
 This function takes a value and returns it as a string wrapped in
 escaped double quotes.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/9076dc6ac54ca702d6458c0891789957c43dabca/src/stockings/utils.clj#L14" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L14" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -214,7 +214,7 @@ escaped double quotes.</pre>
 of strings, enclosed in parenthesis. Also, each string is wrapped
 in double quotes. This function takes a sequence of values and
 converts them in a list suitable for a YQL query.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/9076dc6ac54ca702d6458c0891789957c43dabca/src/stockings/utils.clj#L21" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L21" id="var-source">Source</a>
 </div>
 
 

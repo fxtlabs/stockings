@@ -61,7 +61,15 @@ namespace.
   <h1 class="nopad">Table of Contents</h1>
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
-    
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.alt/get-historical-quotes">get-historical-quotes</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.alt/get-quote">get-quote</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.alt/get-quotes">get-quotes</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.alt/parse-historical-quotes">parse-historical-quotes</a>
+    </div>
     <br />
   </div>
 </div>
@@ -74,10 +82,66 @@ by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
   (:require <span id="long-name">stockings.alt</span>))
 </pre><pre>
 </pre><h2>Overview</h2>
-<pre id="namespace-docstr">Alternative functions for getting and parsing historical stock quotes.</pre>
+<pre id="namespace-docstr">Alternative functions for getting current and historical stock quotes
+from Google Stock.</pre>
 <br />
 <h2>Public Variables and Functions</h2>
-
+<div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="stockings.alt/get-historical-quotes">get-historical-quotes</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (get-historical-quotes stock-symbol start-date end-date)
+</pre>
+  <pre id="var-docstr">Returns a sequence of historical stock quotes corresponding to the
+supplied stock symbol, one quote per day between the supplied start
+and end dates (as org.joda.time.LocalDate objects). Quotes
+corresponding to dates falling on weekends and holidays are not
+included in the resulting sequence. If quotes for the given symbol
+or period cannot be found, it returns nil. The supplied stock symbol
+can have an optional exchange prefix (.e.g "GOOG" or "NASDAQ:GOOG").</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/alt.clj#L157" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="stockings.alt/get-quote">get-quote</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (get-quote stock-symbol)
+</pre>
+  <pre id="var-docstr">Returns the current stock quote corresponding to the supplied stock
+symbol. The result is a map with :symbol, :exchange, :name,
+:currency, :previous-close, :open, :low, :high, :last (trade),
+:last-date-time, :change, :percent-change, :volume, and :avg-volume
+keys. If data for the supplied stock symbol cannot be found, it
+returns nil.</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/alt.clj#L81" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="stockings.alt/get-quotes">get-quotes</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (get-quotes &amp; stock-symbols)
+</pre>
+  <pre id="var-docstr">Returns a sequence of stock quotes corresponding to the given stock
+symbols. A stock quote is a map with :symbol, :exchange, :name,
+:currency, :previous-close, :open, :low, :high, :last (trade),
+:last-date-time, :change, :percent-change, :volume, and :avg-volume
+keys. If data for a symbol cannot be found, its place in the result
+sequence will be nil.</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/alt.clj#L61" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="stockings.alt/parse-historical-quotes">parse-historical-quotes</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (parse-historical-quotes s)
+</pre>
+  <pre id="var-docstr">Parses a string of CSV-encoded historical stock quotes and returns them
+as a sequence of HistoricalQuote records. It expects one quote per line
+with fields for date, open, high, low, close, and volume. The first line
+is assumed to be column headers and is discarded.</pre>
+  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/alt.clj#L130" id="var-source">Source</a>
+</div>
 
 
 </div>

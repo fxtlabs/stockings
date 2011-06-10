@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Stockings - Overview</title>
+    <title>Overview - Stockings 1.0.0 API documentation</title>
     <meta content="Stockings is a Clojure library that gives you an easy to use API to access financial data: current and historical stock quotes, exchange rates, industry sectors, companies, stock symbol suggestions, and more." name="description" />
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
@@ -18,9 +18,9 @@
       _gaq.push(['_trackPageview']);
 
       (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
     </script>
@@ -41,12 +41,19 @@ namespace.
       <div id="leftcolumn"><div style="text-align: center;"></div>
 <div class="menu">
   <div class="WikiCustomNav WikiElement wiki">
-    <a class="wiki_link" href="index.html">Overview</a><br />
-    <a class="wiki_link" href="api-index.html">API Index</a><br />
-    <a class="wiki_link" href="#">Namespaces:</a>
-    <ul id="left-sidebar-list">
-      <li><a href="stockings.alt-api.html" class="wiki_link">stockings.alt</a></li><li><a href="stockings.core-api.html" class="wiki_link">stockings.core</a></li><li><a href="stockings.exchanges-api.html" class="wiki_link">stockings.exchanges</a></li><li><a href="stockings.utils-api.html" class="wiki_link">stockings.utils</a></li>
+    <span class="toc-header"><span id="project-name">Stockings</span> <span id="version">1.0.0</span> API</span><br />
+    <ul>
+      <li><a class="wiki_link" href="index.html">Overview</a></li>
+      <li><a class="wiki_link" href="api-index.html">API Index</a></li>
     </ul>
+    <div class="NamespaceTOC">
+      <span class="toc-header">Namespaces</span>
+      <ul id="left-sidebar-list">
+        <li><a href="stockings.alt-api.html" class="wiki_link">stockings.alt</a></li><li><a href="stockings.core-api.html" class="wiki_link">stockings.core</a></li><li><a href="stockings.exchanges-api.html" class="wiki_link">stockings.exchanges</a></li><li><a href="stockings.utils-api.html" class="wiki_link">stockings.utils</a></li>
+      </ul>
+    </div>
+    
+    <a href="http://clojure.org" class="wiki_link">Clojure Home</a>
   </div>
 </div>
 </div>
@@ -75,18 +82,283 @@ namespace.
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="toc0">An Overview of the <span id="header-project">Stockings</span> API</h1>
+                <div id="content-tag"><h1 id="toc0">API Overview - <span id="header-project">Stockings</span> <span id="header-version">1.0.0</span> (<span id="header-status">stable</span>)</h1>
 <br />
-<div id="project-description">Easy access to financial data: stock quotes, exchange rates, industry sectors, companies, and more.</div>
+<div id="project-description"><p>Stockings is a Clojure library that gives you easy access to
+financial data such as current and historical stock quotes, current currency
+exchange rates, stock symbol suggestions, stock and company info by
+exchanges and industry sectors, and more.</p>
+
+<p>You can find Stockings' source code at <a href="https://github.com/fxtlabs/stockings">https://github.com/fxtlabs/stockings</a>.</p>
+
+<h2>Usage</h2>
+
+<p>The stockings library is available from Clojars at
+<a href="http://clojars.org/com.fxtlabs/stockings">http://clojars.org/com.fxtlabs/stockings</a>.</p>
+
+<p>If you are using Leiningen, just add <code>[com.fxtlabs/stockings "1.0.0"]</code>
+to the dependencies list in your <code>project.clj</code> file and run <code>lein deps</code>
+to download the library from the Clojars archives.</p>
+
+<h2>License</h2>
+
+<p>Copyright (C) 2011 Filippo Tampieri.</p>
+
+<p>Distributed under the <a href="http://www.eclipse.org/org/documents/epl-v10.php">Eclipse Public License v1.0</a>,
+the same as Clojure.</p>
+
+<h2>Examples</h2>
+
+<p>Once you have the stockings JAR file on your classpath, you can run a
+REPL, load the library and start exploring. The following examples show a few
+commands (see user&gt;) and their output (formatted here for readability).
+They all assume you are using the <code>stockings.core</code> namespace:</p>
+
+<pre><code>user&gt; (use 'stockings.core)
+nil
+</code></pre>
+
+<h3>Current stock quotes</h3>
+
+<pre><code>user&gt; (get-quote "YHOO")
+{:symbol "YHOO",
+ :last 16.02,
+ :last-date-time #&lt;DateTime 2011-05-27T20:00:00.000Z&gt;,
+ :name "Yahoo! Inc.",
+ :low 15.95,
+ :open 16.04,
+ :previous-close 15.98,
+ :high 16.19,
+ :volume 20096766}
+</code></pre>
+
+<p>gets the current stock quote for YAHOO! Note that the time for the
+last trade is represented by a <code>org.joda.time.DateTime</code>
+object in UTC. Stockings uses the Joda-Time library for all its
+time-related values.</p>
+
+<pre><code>user&gt; (get-quotes "GOOG" "NASDAQ:AAPL")
+({:symbol "GOOG", ...}
+ {:symbol "AAPL", ...})
+</code></pre>
+
+<p>gets the current stock quotes for Google and Apple. Note that stock
+symbols may optionally be prefixed with the name of an exchange (like
+<code>NASDAQ:AAPL</code> above); however, the Yahoo! Finance service providing the
+financial data does not recognize prefixed stock symbols, so the
+prefix is simply dropped.</p>
+
+<h3>Historical stock quotes</h3>
+
+<pre><code>user&gt; (import [org.joda.time LocalDate])
+org.joda.time.LocalDate
+
+user&gt; (get-historical-quotes "YHOO" (LocalDate. 2011 4 1) (LocalDate. 2011 5 1))
+(#:stockings.core.HistoricalQuote{:date #&lt;LocalDate 2011-04-29&gt;,
+                                  :open 17.46,
+                                  :high 17.77,
+                                  :low 17.36,
+                                  :close 17.7,
+                                  :volume 30800000}
+ #:stockings.core.HistoricalQuote{:date #&lt;LocalDate 2011-04-28&gt;,
+                                  :open 17.22,
+                                  :high 17.53,
+                                  :low 17.17,
+                                  :close 17.51,
+                                  :volume 14414700}
+ ...
+ #:stockings.core.HistoricalQuote{:date #&lt;LocalDate 2011-04-01&gt;,
+                                  :open 16.83,
+                                  :high 16.98,
+                                  :low 16.72,
+                                  :close 16.84,
+                                  :volume 12487400})
+</code></pre>
+
+<p>gets the historical stock quotes for Yahoo! for the period starting on
+April 1, 2011 and ending on May 1, 2011. There are a few things worth
+noting:</p>
+
+<ul>
+<li>The quotes are returned in chronological order starting from the
+most recent.</li>
+<li>There are no entries for dates that fall on a weekend or holiday.</li>
+<li>The dates are represented by <code>org.joda.time.LocalDate</code> objects.
+Note that class <code>LocalDate</code> does not describe an exact instant
+in time (e.g. an instant down to millisecond precision); instead,
+it just refers to a given calendar day and no particular instant
+of time within it.</li>
+</ul>
+
+
+<h3>Info on companies and industry sectors</h3>
+
+<pre><code>user&gt; (get-stock "YHOO")
+{:symbol "YHOO",
+ :name "Yahoo! Inc.",
+ :start-date #&lt;LocalDate 1996-04-12&gt;,
+ :end-date #&lt;LocalDate 2011-05-30&gt;,
+ :sector "Technology",
+ :industry "Internet Information Providers",
+ :full-time-employees 13600}  
+</code></pre>
+
+<p>gets some info on a company.</p>
+
+<pre><code>user&gt; (get-industry-sectors)
+({:name "Basic Materials",
+  :industries [{:id "112", :name "Agricultural Chemicals"}
+               {:id "132", :name "Aluminum"}
+               {:id "110", :name "Chemicals - Major Diversified"}
+               ...
+               {:id "111", :name "Synthetics"}]}
+ {:name "Conglomerates",
+  :industries [{:id "210", :name "Conglomerates"}]}
+ ...)
+</code></pre>
+
+<p>gets a list of all industry sectors and a list of industries for each
+sector.</p>
+
+<pre><code>user&gt; (get-industry 112)
+{:id "112",
+ :name "Agricultural Chemicals",
+ :companies [{:name "Agrium Inc.", :symbol "AGU"}
+             {:name "American Vanguard Corporation", :symbol "AVD"}
+             ...
+             {:name "Yongye International, Inc.", :symbol "YONG"}]}
+</code></pre>
+
+<p>gets a list of all companies for a given industry (identified by its
+ID).</p>
+
+<h3>Current currency exchange rates</h3>
+
+<pre><code>user&gt; (get-exchange-rate :usd :eur)
+{:base :usd,
+ :quote :eur,
+ :rate 0.7002,
+ :ask 0.7003,
+ :bid 0.7001,
+ :date-time #&lt;DateTime 2011-05-30T20:43:00.000Z&gt;}
+</code></pre>
+
+<p>gets the current exchange rate from a base currency (USD) to a quote (or
+counter) currency (EUR). The currencies are denoted by their ISO 4217
+3-letter designators used as strings or keywords. In other words:</p>
+
+<pre><code>user&gt; (get-exchange-rate "USD" "EUR")
+</code></pre>
+
+<p>also works as above.</p>
+
+<h3>Stock symbol lookup</h3>
+
+<pre><code>user&gt; (get-symbol-suggestion "Terra Nitro")
+[{:symbol "TNH",
+  :name "Terra Nitrogen Company, L.P.",
+  :exch "NYQ",
+  :type "S",
+  :exchDisp "NYSE",
+  :typeDisp "Equity"}]
+</code></pre>
+
+<p>gets stock symbol suggestion for the company whose name starts with
+the given prefix. Note that large companies may be traded on several
+exchanges and thus correspond to more than one symbol.</p>
+
+<h3>Current stock quotes - advanced use</h3>
+
+<p>So far so good. Now, let us look at a slightly more complex example.
+Yahoo! Finance actually offers a lot more financial data when asking
+for a stock quote. The <code>get-quote</code> example given at the beginning of
+this section only returned a small subset of this data. Let us now see
+how we can pick and choose what data we want to include in our stock
+quotes.</p>
+
+<pre><code>user&gt; raw-quote-keys
+(:symbol :Name :PERatio :EarningsShare :EPSEstimateNextYear
+ :PercebtChangeFromYearHigh :ChangeFromTwoHundreddayMovingAverage
+ :TwoHundreddayMovingAverage :ChangeinPercent :Bid :DaysLow ...)
+</code></pre>
+
+<p>Var <code>raw-quote-keys</code> lists all the keys to the data contained in a raw
+stock quote (what we can get from Yahoo! Finance). Let's say we want
+to get custom stock quotes including the values of the keys <code>:symbol</code>,
+<code>:Name</code>, and <code>:MarketCapitalization</code>.</p>
+
+<pre><code>user&gt; (def parser (build-quote-parser {:symbol :symbol
+                                       :name :Name
+                                       :cap :MarketCapitalization}))
+#'user/parser
+
+user&gt; (get-quote parser "YHOO")
+{:symbol "YHOO", :name "Yahoo! Inc.", :cap 2.0873E10}
+</code></pre>
+
+<p>Function <code>get-quote</code> takes a quote parser as an optional first
+parameter. The quote parser function is given the raw quote (with all
+the keys listed in <code>raw-quote-keys</code>) and returns a parsed quote as a map
+with the requested keys (<code>:symbol</code>, <code>:name</code>, and <code>:cap</code> in this case). All
+we had to do was call <code>build-quote-parser</code> with a map specifying the
+correspondences between the keys we want in the final quote and the
+keys in the raw quote. So <code>get-quote</code> can get us back a result as a map
+with exactly the info we want, no more, no less; note also that we are
+completely free to use whatever names we want for the keys of the
+resulting map.</p>
+
+<p>Should we require even more flexibility, we can write our own quote
+parser directly:</p>
+
+<pre><code>user&gt; (defrecord MyQuote [stock-symbol company-name last last-date-time])
+user.MyQuote
+
+user&gt; (defn my-parser [q]
+        (let [stock-symbol (parse-quote-item q :symbol)
+              company-name (parse-quote-item q :Name)
+              last (parse-quote-item q :LastTradePriceOnly)
+              last-date-time (parse-last-trade-date-time q)]
+          (MyQuote. stock-symbol company-name last last-date-time)))
+#'user/my-parser
+
+user&gt; (get-quote my-parser "YHOO")
+#:user.MyQuote{:stock-symbol "YHOO",
+               :company-name "Yahoo! Inc.",
+               :last 16.02,
+               :last-date-time #&lt;DateTime 2011-05-27T20:00:00.000Z&gt;}
+</code></pre>
+
+<p>The quote parser does not have to return a map; it can actually return
+any type you like. Function <code>parse-quote-item</code> is used to parse one
+field of the raw quote; it knows the data type (string, double, int,
+etc.) of every field and will return the correct value and type.
+Function <code>parse-last-trade-date-time</code> combines the values of
+<code>:LastTradeDate</code> and <code>:LastTradeTime</code> and returns them as a
+<code>org.joda.time.DateTime</code> object in UTC. You will want to use this
+function if you need access to the last trade time and date because
+the data returned by Yahoo! Finance for these fields is a bit
+inconsistent; the date value is in UTC, but the time value is in the
+time zone of the North American East Coast! Function
+<code>parse-last-trade-date-time</code> corrects for this and returns a date time
+in UTC.</p>
+
+<h2>Digging Deeper</h2>
+
+<p>Stockings includes even more data and functions to help you dig into it.
+Please, consult the detailed API documentation below to find out more.</p>
+</div>
 <br />
 <div id="namespace-entry">
   <br />
   <hr />
   <h2 id="stockings.alt">stockings.alt</h2>
-  by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
+  <span id="author-line">by <span id="author-name">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br /></span>
   <a href="stockings.alt-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr">Alternative functions for getting current and historical stock quotes
-from Google Stock.</pre>
+  <div id="namespace-docstr"><p>Alternative functions for getting current and historical stock quotes
+from Google Finance.</p>
+</div>
+  
+  
   
   Public variables and functions:
   <span id="var-link"><a href="stockings.alt-api.html#stockings.alt/get-historical-quotes" id="var-tag">get-historical-quotes</a> </span><span id="var-link"><a href="stockings.alt-api.html#stockings.alt/get-quote" id="var-tag">get-quote</a> </span><span id="var-link"><a href="stockings.alt-api.html#stockings.alt/get-quotes" id="var-tag">get-quotes</a> </span><span id="var-link"><a href="stockings.alt-api.html#stockings.alt/parse-historical-quotes" id="var-tag">parse-historical-quotes</a> </span><br />
@@ -95,11 +367,14 @@ from Google Stock.</pre>
   <br />
   <hr />
   <h2 id="stockings.core">stockings.core</h2>
-  by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
+  <span id="author-line">by <span id="author-name">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br /></span>
   <a href="stockings.core-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr">Get current and historical stock quotes, current currency exchange rates,
+  <div id="namespace-docstr"><p>Get current and historical stock quotes, current currency exchange rates,
 and info on industry sectors, industries, companies, and stocks
-from Yahoo! Finance.</pre>
+from Yahoo! Finance.</p>
+</div>
+  
+  
   
   Public variables and functions:
   <span id="var-link"><a href="stockings.core-api.html#stockings.core/bare-stock-symbol" id="var-tag">bare-stock-symbol</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/build-quote-parser" id="var-tag">build-quote-parser</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/default-quote-parser" id="var-tag">default-quote-parser</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/explode-stock-symbol" id="var-tag">explode-stock-symbol</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-exchange-rate" id="var-tag">get-exchange-rate</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-exchange-rates" id="var-tag">get-exchange-rates</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-historical-quotes" id="var-tag">get-historical-quotes</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-industries" id="var-tag">get-industries</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-industry" id="var-tag">get-industry</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-industry-sectors" id="var-tag">get-industry-sectors</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-largest-lte" id="var-tag">get-largest-lte</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-quote" id="var-tag">get-quote</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-quotes" id="var-tag">get-quotes</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-stock" id="var-tag">get-stock</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-stocks" id="var-tag">get-stocks</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/get-symbol-suggestion" id="var-tag">get-symbol-suggestion</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/parse-last-trade-date-time" id="var-tag">parse-last-trade-date-time</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/parse-quote-item" id="var-tag">parse-quote-item</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/prefix-stock-symbol" id="var-tag">prefix-stock-symbol</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/raw-quote-keys" id="var-tag">raw-quote-keys</a> </span><span id="var-link"><a href="stockings.core-api.html#stockings.core/to-sorted-map" id="var-tag">to-sorted-map</a> </span><br />
@@ -108,11 +383,14 @@ from Yahoo! Finance.</pre>
   <br />
   <hr />
   <h2 id="stockings.exchanges">stockings.exchanges</h2>
-  by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
+  <span id="author-line">by <span id="author-name">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br /></span>
   <a href="stockings.exchanges-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr">Functions to get a listing of the companies traded on the AMEX,
+  <div id="namespace-docstr"><p>Functions to get a listing of the companies traded on the AMEX,
 NASDAQ, and NYSE stock exchanges. Based on the data made available
-by the NASDAQ at <a href="http://www.nasdaq.com/screening/company-list.aspx">http://www.nasdaq.com/screening/company-list.aspx</a>.</pre>
+by the NASDAQ at <a href="http://www.nasdaq.com/screening/company-list.aspx">http://www.nasdaq.com/screening/company-list.aspx</a>.</p>
+</div>
+  
+  
   
   Public variables and functions:
   <span id="var-link"><a href="stockings.exchanges-api.html#stockings.exchanges/amex" id="var-tag">amex</a> </span><span id="var-link"><a href="stockings.exchanges-api.html#stockings.exchanges/build-lookup" id="var-tag">build-lookup</a> </span><span id="var-link"><a href="stockings.exchanges-api.html#stockings.exchanges/exchanges" id="var-tag">exchanges</a> </span><span id="var-link"><a href="stockings.exchanges-api.html#stockings.exchanges/get-companies" id="var-tag">get-companies</a> </span><span id="var-link"><a href="stockings.exchanges-api.html#stockings.exchanges/industry-sectors" id="var-tag">industry-sectors</a> </span><span id="var-link"><a href="stockings.exchanges-api.html#stockings.exchanges/nasdaq" id="var-tag">nasdaq</a> </span><span id="var-link"><a href="stockings.exchanges-api.html#stockings.exchanges/nyse" id="var-tag">nyse</a> </span><span id="var-link"><a href="stockings.exchanges-api.html#stockings.exchanges/parse-companies" id="var-tag">parse-companies</a> </span><br />
@@ -121,10 +399,13 @@ by the NASDAQ at <a href="http://www.nasdaq.com/screening/company-list.aspx">htt
   <br />
   <hr />
   <h2 id="stockings.utils">stockings.utils</h2>
-  by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
+  <span id="author-line">by <span id="author-name">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br /></span>
   <a href="stockings.utils-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr">Helper functions to access data through the YQL Web Service
-(Yahoo! Query Language) and parse a variety of value types.</pre>
+  <div id="namespace-docstr"><p>Helper functions to access data through the YQL Web Service
+(Yahoo! Query Language) and parse a variety of value types.</p>
+</div>
+  
+  
   
   Public variables and functions:
   <span id="var-link"><a href="stockings.utils-api.html#stockings.utils/map-parser" id="var-tag">map-parser</a> </span><span id="var-link"><a href="stockings.utils-api.html#stockings.utils/parse-date" id="var-tag">parse-date</a> </span><span id="var-link"><a href="stockings.utils-api.html#stockings.utils/parse-double" id="var-tag">parse-double</a> </span><span id="var-link"><a href="stockings.utils-api.html#stockings.utils/parse-int" id="var-tag">parse-int</a> </span><span id="var-link"><a href="stockings.utils-api.html#stockings.utils/parse-keyword" id="var-tag">parse-keyword</a> </span><span id="var-link"><a href="stockings.utils-api.html#stockings.utils/parse-percent" id="var-tag">parse-percent</a> </span><span id="var-link"><a href="stockings.utils-api.html#stockings.utils/parse-time" id="var-tag">parse-time</a> </span><span id="var-link"><a href="stockings.utils-api.html#stockings.utils/submit-yql-query" id="var-tag">submit-yql-query</a> </span><span id="var-link"><a href="stockings.utils-api.html#stockings.utils/yql-string" id="var-tag">yql-string</a> </span><span id="var-link"><a href="stockings.utils-api.html#stockings.utils/yql-string-list" id="var-tag">yql-string-list</a> </span><br />

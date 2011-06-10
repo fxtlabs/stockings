@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>stockings.core API reference (Stockings)</title>
+    <title>stockings.core - Stockings 1.0.0 API documentation</title>
     <meta content="Stockings is a Clojure library that gives you an easy to use API to access financial data: current and historical stock quotes, exchange rates, industry sectors, companies, stock symbol suggestions, and more." name="description" />
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
@@ -18,9 +18,9 @@
       _gaq.push(['_trackPageview']);
 
       (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
     </script>
@@ -41,12 +41,19 @@ namespace.
       <div id="leftcolumn"><div style="text-align: center;"></div>
 <div class="menu">
   <div class="WikiCustomNav WikiElement wiki">
-    <a class="wiki_link" href="index.html">Overview</a><br />
-    <a class="wiki_link" href="api-index.html">API Index</a><br />
-    <a class="wiki_link" href="#">Namespaces:</a>
-    <ul id="left-sidebar-list">
-      <li><a href="stockings.alt-api.html" class="wiki_link">stockings.alt</a></li><li><a href="stockings.core-api.html" class="wiki_link">stockings.core</a></li><li><a href="stockings.exchanges-api.html" class="wiki_link">stockings.exchanges</a></li><li><a href="stockings.utils-api.html" class="wiki_link">stockings.utils</a></li>
+    <span class="toc-header"><span id="project-name">Stockings</span> <span id="version">1.0.0</span> API</span><br />
+    <ul>
+      <li><a class="wiki_link" href="index.html">Overview</a></li>
+      <li><a class="wiki_link" href="api-index.html">API Index</a></li>
     </ul>
+    <div class="NamespaceTOC">
+      <span class="toc-header">Namespaces</span>
+      <ul id="left-sidebar-list">
+        <li><a href="stockings.alt-api.html" class="wiki_link">stockings.alt</a></li><li><a href="stockings.core-api.html" class="wiki_link">stockings.core</a></li><li><a href="stockings.exchanges-api.html" class="wiki_link">stockings.exchanges</a></li><li><a href="stockings.utils-api.html" class="wiki_link">stockings.utils</a></li>
+      </ul>
+    </div>
+    
+    <a href="http://clojure.org" class="wiki_link">Clojure Home</a>
   </div>
 </div>
 </div>
@@ -105,17 +112,19 @@ namespace.
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">stockings.core</span></h1>
-by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
-<br />Usage:
-<pre>
-(ns your-namespace
-  (:require <span id="long-name">stockings.core</span>))
-</pre><pre>
-</pre><h2>Overview</h2>
-<pre id="namespace-docstr">Get current and historical stock quotes, current currency exchange rates,
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">stockings.core</span>
+  - <span id="header-project">Stockings</span> <span id="header-version">1.0.0</span> (<span id="header-status">stable</span>)
+  </h1>
+<span id="author-line">by <span id="author-name">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br /></span>
+<br />Full namespace name: <span id="long-name">stockings.core</span>
+<p></p>
+<h2>Overview</h2>
+<div id="namespace-docstr"><p>Get current and historical stock quotes, current currency exchange rates,
 and info on industry sectors, industries, companies, and stocks
-from Yahoo! Finance.</pre>
+from Yahoo! Finance.</p>
+</div>
+
+
 <br />
 <h2>Public Variables and Functions</h2>
 <div id="var-entry">
@@ -125,8 +134,11 @@ from Yahoo! Finance.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (bare-stock-symbol stock-symbol)
 </pre>
-  <pre id="var-docstr">Returns a stock symbol stripped of the stock exchange prefix, if any.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L44" id="var-source">Source</a>
+  <div id="var-docstr"><p>Returns a stock symbol stripped of the stock exchange prefix, if any.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L44" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -134,12 +146,15 @@ from Yahoo! Finance.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (build-quote-parser key-map)
 </pre>
-  <pre id="var-docstr">Returns a parser that can be passed to get-quote and get-quotes to
+  <div id="var-docstr"><p>Returns a parser that can be passed to <code>get-quote</code> and <code>get-quotes</code> to
 get custom stock quotes. The generated parser will return a stock quote
 in the form of a map with a set of desired keys. The builder expects a
 map from the set of desired keys to the corresponding keys in the raw
-stock quote (see raw-quote-keys for a list of available keys).</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L179" id="var-source">Source</a>
+stock quote (see <code>raw-quote-keys</code> for a list of available keys).</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L179" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -147,11 +162,14 @@ stock quote (see raw-quote-keys for a list of available keys).</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (default-quote-parser raw-quote)
 </pre>
-  <pre id="var-docstr">The quote parser used by get-quote and get-quotes when a custom quote
+  <div id="var-docstr"><p>The quote parser used by <code>get-quote</code> and <code>get-quotes</code> when a custom quote
 parser is not provided. It returns a stock quote in the form of a map
 with :symbol, :name, :last-date-time, :last, :open, :previous-close,
-:high, :low, and :volume keys.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L202" id="var-source">Source</a>
+:high, :low, and :volume keys.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L202" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -159,11 +177,14 @@ with :symbol, :name, :last-date-time, :last, :open, :previous-close,
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (explode-stock-symbol stock-symbol)
 </pre>
-  <pre id="var-docstr">Takes a stock symbol and explodes it into its exchange prefix and
+  <div id="var-docstr"><p>Takes a stock symbol and explodes it into its exchange prefix and
 bare symbol parts, returning a vector with two entries. If the
 exchange prefix is missing, the first entry in the vector will be
-nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L33" id="var-source">Source</a>
+<code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L33" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -171,15 +192,18 @@ nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-exchange-rate base-currency quote-currency)
 </pre>
-  <pre id="var-docstr">Returns the currency exchange rate for the supplied currency pairs.
+  <div id="var-docstr"><p>Returns the currency exchange rate for the supplied currency pairs.
 The currency pair is given as two separate parameters: base and quote
 currencies, specified as keywords or strings using the ISO 4217
-3-letter designators (e.g. (get-exchange-rate :usd :eur)).
+3-letter designators (e.g. <code>(get-exchange-rate :usd :eur)</code>).
 The result is a map with :base, :quote, :rate, :ask, :bid, and
 :date-time keys.
 If the exchange rate for the given currency pair cannot be found, it
-returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L414" id="var-source">Source</a>
+returns <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L414" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -187,15 +211,18 @@ returns nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-exchange-rates &amp; currency-pairs)
 </pre>
-  <pre id="var-docstr">Returns a sequence of currency exchange rate for all the supplied
+  <div id="var-docstr"><p>Returns a sequence of currency exchange rate for all the supplied
 currency pairs. Each currency pair is given as a vector of two items:
 base and quote currencies, specified as keywords or strings using the
-ISO 4217 3-letter designators (e.g. [:usd :eur]).
+ISO 4217 3-letter designators (e.g. <code>[:usd :eur]</code>).
 The items in the returned sequence are maps with :base, :quote, :rate,
 :ask, :bid, and :date-time keys.
 If the exchange rate for a given currency pair cannot be found, its
-place in the result sequence will be nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L395" id="var-source">Source</a>
+place in the result sequence will be <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L395" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -203,13 +230,16 @@ place in the result sequence will be nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-historical-quotes stock-symbol start-date end-date)
 </pre>
-  <pre id="var-docstr">Returns a sequence of historical stock quotes corresponding to the
+  <div id="var-docstr"><p>Returns a sequence of historical stock quotes corresponding to the
 supplied stock symbol, one quote per day between the supplied start
-and end dates (as org.joda.time.LocalDate objects). Quotes
+and end dates (as <code>org.joda.time.LocalDate</code> objects). Quotes
 corresponding to dates falling on weekends and holidays are not
 included in the resulting sequence. If quotes for the given symbol
-or period cannot be found, it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L262" id="var-source">Source</a>
+or period cannot be found, it returns <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L262" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -217,15 +247,18 @@ or period cannot be found, it returns nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-industries &amp; industry-ids)
 </pre>
-  <pre id="var-docstr">Returns a sequence of the industries corresponding to the supplied
+  <div id="var-docstr"><p>Returns a sequence of the industries corresponding to the supplied
 industry ids. Each industry is returned as a map with :id, :name,
 and :companies keys. The value of the latter is a vector of maps
 corresponding to the companies in that industry. Each company is
 a map with :name and :symbol keys. The symbol value can be passed to
-get-quote or get-historical-quotes to get stock quotes for that company.
+<code>get-quote</code> or <code>get-historical-quotes</code> to get stock quotes for that company.
 If the industry for a given id cannot be found, its place in the result
-sequence will be nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L343" id="var-source">Source</a>
+sequence will be nil.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L343" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -233,14 +266,17 @@ sequence will be nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-industry industry-id)
 </pre>
-  <pre id="var-docstr">Returns the industry corresponding to the supplied industry ids.
+  <div id="var-docstr"><p>Returns the industry corresponding to the supplied industry ids.
 The result is a map with :id, :name, and :companies keys. The value
 of the latter is a vector of maps corresponding to the companies in
 that industry. Each company is a map with :name and :symbol keys.
-The symbol value can be passed to get-quote or get-historical-quotes
+The symbol value can be passed to <code>get-quote</code> or <code>get-historical-quotes</code>
 to get stock quotes for that company.
-If the industry for the supplied id cannot be found, it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L359" id="var-source">Source</a>
+If the industry for the supplied id cannot be found, it returns <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L359" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -248,12 +284,15 @@ If the industry for the supplied id cannot be found, it returns nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-industry-sectors)
 </pre>
-  <pre id="var-docstr">Returns a sequence of industry sectors. Each sector is a map with
+  <div id="var-docstr"><p>Returns a sequence of industry sectors. Each sector is a map with
 :name and :industries keys. The value of the latter is a vector of
 maps corresponding to the industries for that sector. Each industry
 is a map with :id and :name fields. The id value can be passed to
-get-industry to get a list of the companies for a given industry.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L328" id="var-source">Source</a>
+<code>get-industry</code> to get a list of the companies for a given industry.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L328" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -262,13 +301,16 @@ get-industry to get a list of the companies for a given industry.</pre>
   <pre id="var-usage">Usage: (get-largest-lte map key)
        (get-largest-lte map key not-found)
 </pre>
-  <pre id="var-docstr">Returns the value mapped to the largest key that is less than or
-equal to the supplied key; returns not-found or nil if a matching key
-cannot be found. The supplied map should be a sorted-map. You can use
+  <div id="var-docstr"><p>Returns the value mapped to the largest key that is less than or
+equal to the supplied key; returns <code>not-found</code> or <code>nil</code> if a matching key
+cannot be found. The supplied map should be a sorted map. You can use
 this function to lookup historical stock quotes by date and still get
 a valid quote when the date falls on a weekend or holiday. Use
-to-sorted-map to create a sorted map from a sequence of historical quotes.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L49" id="var-source">Source</a>
+<code>to-sorted-map</code> to create a sorted map from a sequence of historical quotes.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L49" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -277,11 +319,14 @@ to-sorted-map to create a sorted map from a sequence of historical quotes.</pre>
   <pre id="var-usage">Usage: (get-quote parser stock-symbol)
        (get-quote stock-symbol)
 </pre>
-  <pre id="var-docstr">Returns the stock quote corresponding to the given stock symbol.
+  <div id="var-docstr"><p>Returns the stock quote corresponding to the given stock symbol.
 If the first parameter is a function, it uses it as a parser to turn
 a raw stock quote (provided by Yahoo! Finance) to a custom stock quote
-structure; otherwise, it uses default-quote-parser.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L238" id="var-source">Source</a>
+structure; otherwise, it uses <code>default-quote-parser</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L238" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -289,11 +334,14 @@ structure; otherwise, it uses default-quote-parser.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-quotes parser &amp; stock-symbols)
 </pre>
-  <pre id="var-docstr">Returns a sequence of stock quotes corresponding to the given stock
+  <div id="var-docstr"><p>Returns a sequence of stock quotes corresponding to the given stock
 symbols. If the first parameter is a function, it uses it as a
 parser to turn a raw stock quote (provided by Yahoo! Finance) to a
-custom stock quote structure; otherwise, it uses default-quote-parser.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L222" id="var-source">Source</a>
+custom stock quote structure; otherwise, it uses <code>default-quote-parser</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L222" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -301,11 +349,14 @@ custom stock quote structure; otherwise, it uses default-quote-parser.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-stock stock-symbol)
 </pre>
-  <pre id="var-docstr">Returns the stock description for the supplied stock symbols.
+  <div id="var-docstr"><p>Returns the stock description for the supplied stock symbols.
 This description is a map with :symbol, :name, :start-date, :end-date,
 :sector, :industry, and :full-time-employees keys.
-If data for a symbol cannot be found it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L313" id="var-source">Source</a>
+If data for a symbol cannot be found it returns <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L313" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -313,11 +364,14 @@ If data for a symbol cannot be found it returns nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-stocks &amp; stock-symbols)
 </pre>
-  <pre id="var-docstr">Returns a sequence of stock descriptions for the supplied stock symbols.
+  <div id="var-docstr"><p>Returns a sequence of stock descriptions for the supplied stock symbols.
 A stock description is a map with :symbol, :name, :start-date, :end-date,
 :sector, :industry, and :full-time-employees keys.
-If data for a symbol cannot be found that description will be nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L301" id="var-source">Source</a>
+If data for a symbol cannot be found that description will be <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L301" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -325,11 +379,14 @@ If data for a symbol cannot be found that description will be nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (get-symbol-suggestion company-name)
 </pre>
-  <pre id="var-docstr">Returns zero, one or more suggestions for the stock symbols corresponding
+  <div id="var-docstr"><p>Returns zero, one or more suggestions for the stock symbols corresponding
 to the supplied company name. Company name prefixes will return results
 as well. Note that large companies may be traded on several exchanges and
-may thus result in a long list of suggestions.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L434" id="var-source">Source</a>
+may thus result in a long list of suggestions.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L434" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -337,13 +394,16 @@ may thus result in a long list of suggestions.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (parse-last-trade-date-time raw-quote)
 </pre>
-  <pre id="var-docstr">Looks up the last trade date and time in the supplied raw stock quote
-and combines them into an org.joda.time.DateTime object in UTC. It
+  <div id="var-docstr"><p>Looks up the last trade date and time in the supplied raw stock quote
+and combines them into an <code>org.joda.time.DateTime</code> object in UTC. It
 works around an inconsistency in the Yahoo! Finance data where the
 last trade date is represented in UTC while the last trade time seems
-to be using the North American Easter Coast time zone. It returns nil
-if a valid DateTime object cannot be created.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L167" id="var-source">Source</a>
+to be using the North American East Coast time zone. It returns <code>nil</code>
+if a valid <code>DateTime</code> object cannot be created.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L167" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -351,11 +411,14 @@ if a valid DateTime object cannot be created.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (parse-quote-item raw-quote k)
 </pre>
-  <pre id="var-docstr">Looks up the value of a supplied key into a raw stock quote and
+  <div id="var-docstr"><p>Looks up the value of a supplied key into a raw stock quote and
 converts it from a string into a more useful type (int, double, date,
-time, or keyword depending on the key). It returns nil if it cannot
-find a valid value.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L158" id="var-source">Source</a>
+time, or keyword depending on the key). It returns <code>nil</code> if it cannot
+find a valid value.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L158" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -363,22 +426,28 @@ find a valid value.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (prefix-stock-symbol exchange-symbol stock-symbol)
 </pre>
-  <pre id="var-docstr">Takes the symbols for a stock exchange and a stock and combines them
+  <div id="var-docstr"><p>Takes the symbols for a stock exchange and a stock and combines them
 to create an exchange-prefixed stock symbol (e.g. "NASDAQ" and
-"YHOO" are combined into "NASDAQ:YHOO").</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L24" id="var-source">Source</a>
+"YHOO" are combined into "NASDAQ:YHOO").</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L24" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
   <h2 id="stockings.core/raw-quote-keys">raw-quote-keys</h2>
   <span id="var-type">var</span><br />
   <pre id="var-usage"></pre>
-  <pre id="var-docstr">A list of all the keys available in a raw stock quote. A custom stock
-quote can be created by supplying get-quote with a parser capable of
+  <div id="var-docstr"><p>A list of all the keys available in a raw stock quote. A custom stock
+quote can be created by supplying <code>get-quote</code> with a parser capable of
 extracting the value corresponding to a chosen subset of these keys
 from a raw stock quote and packaging them into the desired result
-structure.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L151" id="var-source">Source</a>
+structure.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L151" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -386,10 +455,13 @@ structure.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (to-sorted-map get-key xs)
 </pre>
-  <pre id="var-docstr">Builds a sorted map from the supplied collection. The supplied get-key
+  <div id="var-docstr"><p>Builds a sorted map from the supplied collection. The supplied <code>get-key</code>
 function is used to compute the key corresponding to a given item
-in the collection.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/429e51ce7c6505c0c230bdc7bd87d79bf79f872c/src/stockings/core.clj#L62" id="var-source">Source</a>
+in the collection.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L62" id="var-source">Source</a>
 </div>
 
 

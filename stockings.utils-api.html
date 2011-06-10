@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>stockings.utils API reference (Stockings)</title>
+    <title>stockings.utils - Stockings 1.0.0 API documentation</title>
     <meta content="Stockings is a Clojure library that gives you an easy to use API to access financial data: current and historical stock quotes, exchange rates, industry sectors, companies, stock symbol suggestions, and more." name="description" />
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
@@ -18,9 +18,9 @@
       _gaq.push(['_trackPageview']);
 
       (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
     </script>
@@ -41,12 +41,19 @@ namespace.
       <div id="leftcolumn"><div style="text-align: center;"></div>
 <div class="menu">
   <div class="WikiCustomNav WikiElement wiki">
-    <a class="wiki_link" href="index.html">Overview</a><br />
-    <a class="wiki_link" href="api-index.html">API Index</a><br />
-    <a class="wiki_link" href="#">Namespaces:</a>
-    <ul id="left-sidebar-list">
-      <li><a href="stockings.alt-api.html" class="wiki_link">stockings.alt</a></li><li><a href="stockings.core-api.html" class="wiki_link">stockings.core</a></li><li><a href="stockings.exchanges-api.html" class="wiki_link">stockings.exchanges</a></li><li><a href="stockings.utils-api.html" class="wiki_link">stockings.utils</a></li>
+    <span class="toc-header"><span id="project-name">Stockings</span> <span id="version">1.0.0</span> API</span><br />
+    <ul>
+      <li><a class="wiki_link" href="index.html">Overview</a></li>
+      <li><a class="wiki_link" href="api-index.html">API Index</a></li>
     </ul>
+    <div class="NamespaceTOC">
+      <span class="toc-header">Namespaces</span>
+      <ul id="left-sidebar-list">
+        <li><a href="stockings.alt-api.html" class="wiki_link">stockings.alt</a></li><li><a href="stockings.core-api.html" class="wiki_link">stockings.core</a></li><li><a href="stockings.exchanges-api.html" class="wiki_link">stockings.exchanges</a></li><li><a href="stockings.utils-api.html" class="wiki_link">stockings.utils</a></li>
+      </ul>
+    </div>
+    
+    <a href="http://clojure.org" class="wiki_link">Clojure Home</a>
   </div>
 </div>
 </div>
@@ -83,16 +90,18 @@ namespace.
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">stockings.utils</span></h1>
-by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
-<br />Usage:
-<pre>
-(ns your-namespace
-  (:require <span id="long-name">stockings.utils</span>))
-</pre><pre>
-</pre><h2>Overview</h2>
-<pre id="namespace-docstr">Helper functions to access data through the YQL Web Service
-(Yahoo! Query Language) and parse a variety of value types.</pre>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">stockings.utils</span>
+  - <span id="header-project">Stockings</span> <span id="header-version">1.0.0</span> (<span id="header-status">stable</span>)
+  </h1>
+<span id="author-line">by <span id="author-name">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br /></span>
+<br />Full namespace name: <span id="long-name">stockings.utils</span>
+<p></p>
+<h2>Overview</h2>
+<div id="namespace-docstr"><p>Helper functions to access data through the YQL Web Service
+(Yahoo! Query Language) and parse a variety of value types.</p>
+</div>
+
+
 <br />
 <h2>Public Variables and Functions</h2>
 <div id="var-entry">
@@ -102,12 +111,15 @@ by <span id="author">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br />
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (map-parser parser data)
 </pre>
-  <pre id="var-docstr">Takes a parser and a data value. If the data is a vector, it maps the
+  <div id="var-docstr"><p>Takes a parser and a data value. If the data is a vector, it maps the
 parser to each item in the vector; otherwise, it simply calls the parser
 on the data value. This function is useful to process the result
-returned by submit-yql-query because YQL returns either a JSON object
-or a vector depending on whether the query returns one or more results.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L56" id="var-source">Source</a>
+returned by <code>submit-yql-query</code> because YQL returns either a JSON object
+or a vector depending on whether the query returns one or more results.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L56" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -115,10 +127,13 @@ or a vector depending on whether the query returns one or more results.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (parse-date s)
 </pre>
-  <pre id="var-docstr">If the supplied string represents a valid date in either of the
+  <div id="var-docstr"><p>If the supplied string represents a valid date in either of the
 yyyy-MM-dd or M/dd/yyyy formats, it returns the date as an
-org.joda.time.LocalDate object; otherwise, it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L116" id="var-source">Source</a>
+<code>org.joda.time.LocalDate</code> object; otherwise, it returns <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L116" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -126,12 +141,15 @@ org.joda.time.LocalDate object; otherwise, it returns nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (parse-double s)
 </pre>
-  <pre id="var-docstr">If the supplied string represents a valid number in standard decimal
+  <div id="var-docstr"><p>If the supplied string represents a valid number in standard decimal
 notation (e.g. 123.4 and not 1.234E2), it returns its value as a
-double; otherwise it returns nil. The string can optionally end with
+double; otherwise it returns <code>nil</code>. The string can optionally end with
 a letter K, M, or B indicating thousands, millions, or billions
-respectively.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L91" id="var-source">Source</a>
+respectively.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L91" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -139,9 +157,12 @@ respectively.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (parse-int s)
 </pre>
-  <pre id="var-docstr">If the supplied string represents a valid integer, it returns its
-value as an int; otherwise it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L78" id="var-source">Source</a>
+  <div id="var-docstr"><p>If the supplied string represents a valid integer, it returns its
+value as an int; otherwise it returns <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L78" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -149,9 +170,12 @@ value as an int; otherwise it returns nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (parse-keyword s)
 </pre>
-  <pre id="var-docstr">If the supplied string is not empty, it is returned as a lower-case
-keyword; otherwise it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L71" id="var-source">Source</a>
+  <div id="var-docstr"><p>If the supplied string is not empty, it is returned as a lower-case
+keyword; otherwise it returns <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L71" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -159,11 +183,14 @@ keyword; otherwise it returns nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (parse-percent s)
 </pre>
-  <pre id="var-docstr">If the supplied string represents a valid percentage in standard
+  <div id="var-docstr"><p>If the supplied string represents a valid percentage in standard
 decimal notation and ending with a % sign (e.g. 12.3%), it returns
 its fractional value as a double (e.g. 12.3% becomes 0.123);
-otherwise, it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L102" id="var-source">Source</a>
+otherwise, it returns <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L102" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -171,10 +198,13 @@ otherwise, it returns nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (parse-time s)
 </pre>
-  <pre id="var-docstr">If the supplied string represents a valid time in the hh:mmaa format
-(e.g. 9:30pm), it returns the time as an org.joda.time.LocalTime object;
-otherwise, it returns nil.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L130" id="var-source">Source</a>
+  <div id="var-docstr"><p>If the supplied string represents a valid time in the hh:mmaa format
+(e.g. 9:30pm), it returns the time as an <code>org.joda.time.LocalTime</code> object;
+otherwise, it returns <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L130" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -182,13 +212,16 @@ otherwise, it returns nil.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (submit-yql-query query)
 </pre>
-  <pre id="var-docstr">Takes a YQL query string and submit it to Yahoo!'s YQL service,
+  <div id="var-docstr"><p>Takes a YQL query string and submit it to Yahoo!'s YQL service,
 returning the value of the :result key in the JSON body of the
 response as a Clojure map. It throws an Exception if the
 response status is anything other than 200 or if the JSON response
 indicates an error (the error description is included in the
-exception).</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L32" id="var-source">Source</a>
+exception).</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L32" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -196,10 +229,13 @@ exception).</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (yql-string v)
 </pre>
-  <pre id="var-docstr">String values in a YQL query must be enclosed in double quotes.
+  <div id="var-docstr"><p>String values in a YQL query must be enclosed in double quotes.
 This function takes a value and returns it as a string wrapped in
-escaped double quotes.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L14" id="var-source">Source</a>
+escaped double quotes.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L14" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -207,11 +243,14 @@ escaped double quotes.</pre>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (yql-string-list vs)
 </pre>
-  <pre id="var-docstr">A list of string values in a YQL query is a comma-separated list
+  <div id="var-docstr"><p>A list of string values in a YQL query is a comma-separated list
 of strings, enclosed in parenthesis. Also, each string is wrapped
 in double quotes. This function takes a sequence of values and
-converts them in a list suitable for a YQL query.</pre>
-  <a href="https://github.com/fxtlabs/stockings/blob/8f86604b3eb75eb4197eb66ffd88c66bff54248d/src/stockings/utils.clj#L21" id="var-source">Source</a>
+converts them in a list suitable for a YQL query.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L21" id="var-source">Source</a>
 </div>
 
 

@@ -14,14 +14,11 @@
             :comments "same as Clojure"}
   :autodoc 
   {:name "Stockings"
-   :branches [{:name "master"
-               :version "1.0.0"
-               :status "stable"}]
    :copyright "Copyright 2011 Filippo Tampieri"
    :root "."
    :source-path "src"
    :web-src-dir "https://github.com/fxtlabs/stockings/blob/"
-   :web-home "http://stockings.fxtlabs.com"
+   :web-home "http://stockings.fxtlabs.com/"
    :output-path "autodoc"
    :param-dir "autodoc-params"
    :namespaces-to-document ["stockings"]

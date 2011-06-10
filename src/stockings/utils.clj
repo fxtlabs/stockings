@@ -57,7 +57,7 @@
   "Takes a parser and a data value. If the data is a vector, it maps the
    parser to each item in the vector; otherwise, it simply calls the parser
    on the data value. This function is useful to process the result
-   returned by submit-yql-query because YQL returns either a JSON object
+   returned by `submit-yql-query` because YQL returns either a JSON object
    or a vector depending on whether the query returns one or more results."
   [parser data]
   (if (vector? data)
@@ -70,14 +70,14 @@
 
 (defn parse-keyword
   "If the supplied string is not empty, it is returned as a lower-case
-   keyword; otherwise it returns nil."
+   keyword; otherwise it returns `nil`."
   [^String s]
   (if-not (empty? s)
     (keyword (lower-case s))))
 
 (defn parse-int
   "If the supplied string represents a valid integer, it returns its
-   value as an int; otherwise it returns nil."
+   value as an int; otherwise it returns `nil`."
   [^String s]
   (if s
     (if-let [m (re-matches #"(?:\+|\-)?\d+" s)]
@@ -91,7 +91,7 @@
 (defn parse-double
   "If the supplied string represents a valid number in standard decimal
    notation (e.g. 123.4 and not 1.234E2), it returns its value as a
-   double; otherwise it returns nil. The string can optionally end with
+   double; otherwise it returns `nil`. The string can optionally end with
    a letter K, M, or B indicating thousands, millions, or billions
    respectively."
   [^String s]
@@ -103,7 +103,7 @@
   "If the supplied string represents a valid percentage in standard
    decimal notation and ending with a % sign (e.g. 12.3%), it returns
    its fractional value as a double (e.g. 12.3% becomes 0.123);
-   otherwise, it returns nil."
+   otherwise, it returns `nil`."
   [^String s]
   (if s
     (if-let [m (re-matches #"((?:\+|\-)?\d+(?:\.\d*)?)%" s)]
@@ -116,7 +116,7 @@
 (defn parse-date
   "If the supplied string represents a valid date in either of the
    yyyy-MM-dd or M/dd/yyyy formats, it returns the date as an
-   org.joda.time.LocalDate object; otherwise, it returns nil."
+   `org.joda.time.LocalDate` object; otherwise, it returns `nil`."
   [^String s]
   (if s
     (first
@@ -129,8 +129,8 @@
 
 (defn parse-time
   "If the supplied string represents a valid time in the hh:mmaa format
-   (e.g. 9:30pm), it returns the time as an org.joda.time.LocalTime object;
-   otherwise, it returns nil."
+   (e.g. 9:30pm), it returns the time as an `org.joda.time.LocalTime` object;
+   otherwise, it returns `nil`."
   [^String s]
   (if s
     (.toLocalTime (.parseDateTime time-parser s))))

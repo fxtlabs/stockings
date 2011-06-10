@@ -40,7 +40,7 @@ in the ``autodoc`` directory under the project root.
 Examples
 --------
 
-Once you have the stokings JAR file on your classpath, you can run a
+Once you have the stockings JAR file on your classpath, you can run a
 REPL, load the library and start exploring. The following shows a few
 commands (see user>) and their output (formatted here for readability):
 

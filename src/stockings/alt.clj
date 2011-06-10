@@ -1,6 +1,6 @@
 (ns stockings.alt
   "Alternative functions for getting current and historical stock quotes
-   from Google Stock."
+   from Google Finance."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (join split-lines)]
         [clojure.contrib.def :only (defvar-)]
@@ -64,7 +64,7 @@
    :currency, :previous-close, :open, :low, :high, :last (trade),
    :last-date-time, :change, :percent-change, :volume, and :avg-volume
    keys. If data for a symbol cannot be found, its place in the result
-   sequence will be nil."
+   sequence will be `nil`."
   [& stock-symbols]
   (if stock-symbols
     (let [url (str "http://www.google.com/ig/api?"
@@ -84,7 +84,7 @@
    :currency, :previous-close, :open, :low, :high, :last (trade),
    :last-date-time, :change, :percent-change, :volume, and :avg-volume
    keys. If data for the supplied stock symbol cannot be found, it
-   returns nil."
+   returns `nil`."
   [stock-symbol]
   (first (get-quotes stock-symbol)))
 
@@ -95,15 +95,15 @@
 (defvar- date-parser (DateTimeFormat/forPattern "dd-MMM-yy"))
 
 (defn- parse-date
-  "Parse a string representing a date into a org.joda.time.LocalDate object."
+  "Parse a string representing a date into a `org.joda.time.LocalDate` object."
   [^String s]
   (.toLocalDate (.parseDateTime date-parser s)))
 
 (defvar- re-line
   #"((?:[0-9]|[123][0-9])-\w{3}-[0-9]{2}),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?)"
   "The regular expression used to match one line in the CSV-encoded quotes.
-   It matches a line in the form 'Date,Open,High,Low,Close,Volume'
-   where the Date is given as dd-MMM-yy and the other fields are
+   It matches a line in the form `Date,Open,High,Low,Close,Volume`
+   where the `Date` is given as dd-MMM-yy and the other fields are
    non-negative numbers with an optional fractional part.")
 
 (defn- valid-record?
@@ -129,7 +129,7 @@
 
 (defn parse-historical-quotes
   "Parses a string of CSV-encoded historical stock quotes and returns them
-   as a sequence of HistoricalQuote records. It expects one quote per line
+   as a sequence of `HistoricalQuote` records. It expects one quote per line
    with fields for date, open, high, low, close, and volume. The first line
    is assumed to be column headers and is discarded."
   [^String s]
@@ -143,7 +143,7 @@
 (defn- get-historical-quotes*
   "Tries to get historical quotes from Google Finance. If the request fails
    with a 400 status code, it means the stock symbol could not be found or
-   the dates were invalid; in this case, it just returns nil; otherwise, it
+   the dates were invalid; in this case, it just returns `nil`; otherwise, it
    rethrows the exception."
   [params]
    (try
@@ -157,10 +157,10 @@
 (defn get-historical-quotes
   "Returns a sequence of historical stock quotes corresponding to the
    supplied stock symbol, one quote per day between the supplied start
-   and end dates (as org.joda.time.LocalDate objects). Quotes
+   and end dates (as `org.joda.time.LocalDate` objects). Quotes
    corresponding to dates falling on weekends and holidays are not
    included in the resulting sequence. If quotes for the given symbol
-   or period cannot be found, it returns nil. The supplied stock symbol
+   or period cannot be found, it returns `nil`. The supplied stock symbol
    can have an optional exchange prefix (.e.g \"GOOG\" or \"NASDAQ:GOOG\")." 
   [^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
   (let [params {:q stock-symbol

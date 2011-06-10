@@ -1,7 +1,7 @@
 (ns stockings.exchanges
   "Functions to get a listing of the companies traded on the AMEX,
    NASDAQ, and NYSE stock exchanges. Based on the data made available
-   by the NASDAQ at http://www.nasdaq.com/screening/company-list.aspx."
+   by the NASDAQ at <http://www.nasdaq.com/screening/company-list.aspx>."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (split lower-case upper-case)]
         [clojure.contrib.def :only (defvar defvar-)]
@@ -109,7 +109,7 @@
    the supplied keyword. If no keyword is provided, it returns a merged list
    of the companies traded on the NASDAQ, NYSE, and AMEX exchanges.
    The companies are returned as a sequence of Company records.
-   See parse-companies for details."
+   See `parse-companies` for details."
   ([exchange-key]
      (let [params {:render "download", :exchange (name exchange-key)}
            request (client/get source-url {:query-params params})]
@@ -136,7 +136,7 @@
    and returns the Company record corresponding to it. The stock symbol may
    optionally be prefixed with a stock exchange (e.g. \"NASDAQ:GOOG\").
    If the stock exchange is not specified and multiple matches are found, it
-   returns a vector of the matches; if no matches are found, it returns nil."
+   returns a vector of the matches; if no matches are found, it returns `nil`."
   [companies]
   (let [m (build-companies-map companies)]
     (fn [^String stock-symbol]

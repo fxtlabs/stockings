@@ -34,7 +34,7 @@
   "Takes a stock symbol and explodes it into its exchange prefix and
    bare symbol parts, returning a vector with two entries. If the
    exchange prefix is missing, the first entry in the vector will be
-   nil."
+   `nil`."
   [^String stock-symbol]
   (let [[s exchange symbol] (re-matches #"(.+):(.+)" stock-symbol)]
     (if s
@@ -48,11 +48,11 @@
 
 (defn get-largest-lte
   "Returns the value mapped to the largest key that is less than or
-   equal to the supplied key; returns not-found or nil if a matching key
-   cannot be found. The supplied map should be a sorted-map. You can use
+   equal to the supplied key; returns `not-found` or `nil` if a matching key
+   cannot be found. The supplied map should be a sorted map. You can use
    this function to lookup historical stock quotes by date and still get
    a valid quote when the date falls on a weekend or holiday. Use
-   to-sorted-map to create a sorted map from a sequence of historical quotes."
+   `to-sorted-map` to create a sorted map from a sequence of historical quotes."
   ([^clojure.lang.Sorted map key] (get-largest-lte map key nil))
   ([^clojure.lang.Sorted map key not-found]
      (if-let [lte-part (rsubseq map <= key)]
@@ -60,7 +60,7 @@
        not-found)))
 
 (defn to-sorted-map
-  "Builds a sorted map from the supplied collection. The supplied get-key
+  "Builds a sorted map from the supplied collection. The supplied `get-key`
    function is used to compute the key corresponding to a given item
    in the collection."
   [get-key xs]
@@ -150,7 +150,7 @@
 
 (defvar raw-quote-keys (keys quote-parse-map)
   "A list of all the keys available in a raw stock quote. A custom stock
-   quote can be created by supplying get-quote with a parser capable of
+   quote can be created by supplying `get-quote` with a parser capable of
    extracting the value corresponding to a chosen subset of these keys
    from a raw stock quote and packaging them into the desired result
    structure.")
@@ -158,7 +158,7 @@
 (defn parse-quote-item
   "Looks up the value of a supplied key into a raw stock quote and
    converts it from a string into a more useful type (int, double, date,
-   time, or keyword depending on the key). It returns nil if it cannot
+   time, or keyword depending on the key). It returns `nil` if it cannot
    find a valid value."
   [raw-quote k]
   (if-let [value-parser (get quote-parse-map k)]
@@ -166,22 +166,22 @@
 
 (defn parse-last-trade-date-time
   "Looks up the last trade date and time in the supplied raw stock quote
-   and combines them into an org.joda.time.DateTime object in UTC. It
+   and combines them into an `org.joda.time.DateTime` object in UTC. It
    works around an inconsistency in the Yahoo! Finance data where the
    last trade date is represented in UTC while the last trade time seems
-   to be using the North American Easter Coast time zone. It returns nil
-   if a valid DateTime object cannot be created."
+   to be using the North American East Coast time zone. It returns `nil`
+   if a valid `DateTime` object cannot be created."
   [raw-quote]
   (let [date (parse-quote-item raw-quote :LastTradeDate)
         time (parse-quote-item raw-quote :LastTradeTime)]
     (get-correct-date-time date time)))
 
 (defn build-quote-parser
-  "Returns a parser that can be passed to get-quote and get-quotes to
+  "Returns a parser that can be passed to `get-quote` and `get-quotes` to
    get custom stock quotes. The generated parser will return a stock quote
    in the form of a map with a set of desired keys. The builder expects a
    map from the set of desired keys to the corresponding keys in the raw
-   stock quote (see raw-quote-keys for a list of available keys)."
+   stock quote (see `raw-quote-keys` for a list of available keys)."
   [key-map]
   (fn [raw-quote]
     (apply hash-map
@@ -200,7 +200,7 @@
 (defvar- default-quote-parser* (build-quote-parser default-key-map))
 
 (defn default-quote-parser
-  "The quote parser used by get-quote and get-quotes when a custom quote
+  "The quote parser used by `get-quote` and `get-quotes` when a custom quote
    parser is not provided. It returns a stock quote in the form of a map
    with :symbol, :name, :last-date-time, :last, :open, :previous-close,
    :high, :low, and :volume keys."
@@ -212,7 +212,7 @@
 (defn- wrap-error-check
   "Augments a stock quote parser to check the raw quote for errors
    (typically arising when an invalid stock symbol is required of
-   get-quote). The resulting parser will return nil if an error is
+   `get-quote`). The resulting parser will return `nil` if an error is
    found; otherwise, it will invoke the original parser."
   [parser]
   (fn [r]
@@ -223,7 +223,7 @@
   "Returns a sequence of stock quotes corresponding to the given stock
    symbols. If the first parameter is a function, it uses it as a
    parser to turn a raw stock quote (provided by Yahoo! Finance) to a
-   custom stock quote structure; otherwise, it uses default-quote-parser."
+   custom stock quote structure; otherwise, it uses `default-quote-parser`."
   [parser & stock-symbols]
   (let [[parser stock-symbols] (if (fn? parser)
                                   [parser stock-symbols]
@@ -239,7 +239,7 @@
   "Returns the stock quote corresponding to the given stock symbol.
    If the first parameter is a function, it uses it as a parser to turn
    a raw stock quote (provided by Yahoo! Finance) to a custom stock quote
-   structure; otherwise, it uses default-quote-parser."
+   structure; otherwise, it uses `default-quote-parser`."
   ([parser stock-symbol] (first (get-quotes parser stock-symbol)))
   ([stock-symbol] (first (get-quotes stock-symbol))))
 
@@ -262,10 +262,10 @@
 (defn get-historical-quotes
   "Returns a sequence of historical stock quotes corresponding to the
    supplied stock symbol, one quote per day between the supplied start
-   and end dates (as org.joda.time.LocalDate objects). Quotes
+   and end dates (as `org.joda.time.LocalDate` objects). Quotes
    corresponding to dates falling on weekends and holidays are not
    included in the resulting sequence. If quotes for the given symbol
-   or period cannot be found, it returns nil."
+   or period cannot be found, it returns `nil`."
   [^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
   (let [query (str "select * from yahoo.finance.historicaldata where symbol = "
                    (yql/yql-string (bare-stock-symbol stock-symbol))
@@ -302,7 +302,7 @@
   "Returns a sequence of stock descriptions for the supplied stock symbols.
    A stock description is a map with :symbol, :name, :start-date, :end-date,
    :sector, :industry, and :full-time-employees keys.
-   If data for a symbol cannot be found that description will be nil."
+   If data for a symbol cannot be found that description will be `nil`."
   [& stock-symbols]
   (if stock-symbols
     (let [query (str "select * from yahoo.finance.stocks where symbol in "
@@ -314,7 +314,7 @@
   "Returns the stock description for the supplied stock symbols.
    This description is a map with :symbol, :name, :start-date, :end-date,
    :sector, :industry, and :full-time-employees keys.
-   If data for a symbol cannot be found it returns nil."
+   If data for a symbol cannot be found it returns `nil`."
   [stock-symbol]
   (first (get-stocks stock-symbol)))
 
@@ -330,7 +330,7 @@
    :name and :industries keys. The value of the latter is a vector of
    maps corresponding to the industries for that sector. Each industry
    is a map with :id and :name fields. The id value can be passed to
-   get-industry to get a list of the companies for a given industry."
+   `get-industry` to get a list of the companies for a given industry."
   []
   (let [query "select * from yahoo.finance.sectors"
         result (yql/submit-yql-query query)]
@@ -346,7 +346,7 @@
    and :companies keys. The value of the latter is a vector of maps
    corresponding to the companies in that industry. Each company is
    a map with :name and :symbol keys. The symbol value can be passed to
-   get-quote or get-historical-quotes to get stock quotes for that company.
+   `get-quote` or `get-historical-quotes` to get stock quotes for that company.
    If the industry for a given id cannot be found, its place in the result
    sequence will be nil."
   [& industry-ids]
@@ -361,9 +361,9 @@
    The result is a map with :id, :name, and :companies keys. The value
    of the latter is a vector of maps corresponding to the companies in
    that industry. Each company is a map with :name and :symbol keys.
-   The symbol value can be passed to get-quote or get-historical-quotes
+   The symbol value can be passed to `get-quote` or `get-historical-quotes`
    to get stock quotes for that company.
-   If the industry for the supplied id cannot be found, it returns nil."
+   If the industry for the supplied id cannot be found, it returns `nil`."
   [industry-id]
   (first (get-industries industry-id)))
 
@@ -396,11 +396,11 @@
   "Returns a sequence of currency exchange rate for all the supplied
    currency pairs. Each currency pair is given as a vector of two items:
    base and quote currencies, specified as keywords or strings using the
-   ISO 4217 3-letter designators (e.g. [:usd :eur]).
+   ISO 4217 3-letter designators (e.g. `[:usd :eur]`).
    The items in the returned sequence are maps with :base, :quote, :rate,
    :ask, :bid, and :date-time keys.
    If the exchange rate for a given currency pair cannot be found, its
-   place in the result sequence will be nil."
+   place in the result sequence will be `nil`."
   [& currency-pairs]
   (if currency-pairs
     (let [pairs (map (fn [[base-currency quote-currency]]
@@ -415,11 +415,11 @@
   "Returns the currency exchange rate for the supplied currency pairs.
    The currency pair is given as two separate parameters: base and quote
    currencies, specified as keywords or strings using the ISO 4217
-   3-letter designators (e.g. (get-exchange-rate :usd :eur)).
+   3-letter designators (e.g. `(get-exchange-rate :usd :eur)`).
    The result is a map with :base, :quote, :rate, :ask, :bid, and
    :date-time keys.
    If the exchange rate for the given currency pair cannot be found, it
-   returns nil."  
+   returns `nil`."  
   [base-currency quote-currency]
   (first (get-exchange-rates [base-currency quote-currency])))
 

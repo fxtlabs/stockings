@@ -161,7 +161,11 @@
    corresponding to dates falling on weekends and holidays are not
    included in the resulting sequence. If quotes for the given symbol
    or period cannot be found, it returns `nil`. The supplied stock symbol
-   can have an optional exchange prefix (.e.g \"GOOG\" or \"NASDAQ:GOOG\")." 
+   can have an optional exchange prefix (.e.g \"GOOG\" or \"NASDAQ:GOOG\").
+
+   **NOTE:** The Google Finance service limits the result to 4,000 items.
+   If the supplied date range results in more than that limit, only the
+   most recent 4,000 quotes will be returned." 
   [^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
   (let [params {:q stock-symbol
                 :startdate (str start-date)

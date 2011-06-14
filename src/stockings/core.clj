@@ -265,7 +265,11 @@
    and end dates (as `org.joda.time.LocalDate` objects). Quotes
    corresponding to dates falling on weekends and holidays are not
    included in the resulting sequence. If quotes for the given symbol
-   or period cannot be found, it returns `nil`."
+   or period cannot be found, it returns `nil`.
+
+   **NOTE:** The Yahoo! Finance service limits the requested period to about
+   18 months. If the supplied date range describes a period longer than that
+   limit, the query returns `nil`."
   [^String stock-symbol ^LocalDate start-date ^LocalDate end-date]
   (let [query (str "select * from yahoo.finance.historicaldata where symbol = "
                    (yql/yql-string (bare-stock-symbol stock-symbol))

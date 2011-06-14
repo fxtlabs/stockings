@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>stockings.core - Stockings 1.0.0 API documentation</title>
+    <title>stockings.core - Stockings nil API documentation</title>
     <meta content="Stockings is a Clojure library that gives you an easy to use API to access financial data: current and historical stock quotes, exchange rates, industry sectors, companies, stock symbol suggestions, and more." name="description" />
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
@@ -41,7 +41,7 @@ namespace.
       <div id="leftcolumn"><div style="text-align: center;"></div>
 <div class="menu">
   <div class="WikiCustomNav WikiElement wiki">
-    <span class="toc-header"><span id="project-name">Stockings</span> <span id="version">1.0.0</span> API</span><br />
+    <span class="toc-header"><span id="project-name">Stockings</span> <span id="version"></span> API</span><br />
     <ul>
       <li><a class="wiki_link" href="index.html">Overview</a></li>
       <li><a class="wiki_link" href="api-index.html">API Index</a></li>
@@ -114,7 +114,7 @@ namespace.
 </div>
 </div>
                 <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">stockings.core</span>
-  - <span id="header-project">Stockings</span> <span id="header-version">1.0.0</span> (<span id="header-status">stable</span>)
+  - <span id="header-project">Stockings</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 <span id="author-line">by <span id="author-name">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br /></span>
 <br />Full namespace name: <span id="long-name">stockings.core</span>
@@ -139,7 +139,7 @@ from Yahoo! Finance.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L44" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L44" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -155,7 +155,7 @@ stock quote (see <code>raw-quote-keys</code> for a list of available keys).</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L179" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L179" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -170,7 +170,7 @@ with :symbol, :name, :last-date-time, :last, :open, :previous-close,
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L202" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L202" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -185,7 +185,7 @@ exchange prefix is missing, the first entry in the vector will be
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L33" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L33" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -204,7 +204,7 @@ returns <code>nil</code>.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L414" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L418" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -223,7 +223,7 @@ place in the result sequence will be <code>nil</code>.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L395" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L399" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -237,10 +237,14 @@ and end dates (as <code>org.joda.time.LocalDate</code> objects). Quotes
 corresponding to dates falling on weekends and holidays are not
 included in the resulting sequence. If quotes for the given symbol
 or period cannot be found, it returns <code>nil</code>.</p>
+
+<p><strong>NOTE:</strong> The Yahoo! Finance service limits the requested period to about
+18 months. If the supplied date range describes a period longer than that
+limit, the query returns <code>nil</code>.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L262" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L262" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -259,7 +263,7 @@ sequence will be nil.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L343" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L347" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -277,7 +281,7 @@ If the industry for the supplied id cannot be found, it returns <code>nil</code>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L359" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L363" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -293,7 +297,7 @@ is a map with :id and :name fields. The id value can be passed to
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L328" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L332" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -311,7 +315,7 @@ a valid quote when the date falls on a weekend or holiday. Use
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L49" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L49" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -327,7 +331,7 @@ structure; otherwise, it uses <code>default-quote-parser</code>.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L238" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L238" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -342,7 +346,7 @@ custom stock quote structure; otherwise, it uses <code>default-quote-parser</cod
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L222" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L222" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -357,7 +361,7 @@ If data for a symbol cannot be found it returns <code>nil</code>.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L313" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L317" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -372,7 +376,7 @@ If data for a symbol cannot be found that description will be <code>nil</code>.<
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L301" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L305" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -387,7 +391,7 @@ may thus result in a long list of suggestions.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L434" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L438" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -404,7 +408,7 @@ if a valid <code>DateTime</code> object cannot be created.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L167" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L167" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -419,7 +423,7 @@ find a valid value.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L158" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L158" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -433,7 +437,7 @@ to create an exchange-prefixed stock symbol (e.g. "NASDAQ" and
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L24" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L24" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -448,7 +452,7 @@ structure.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L151" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L151" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -462,7 +466,7 @@ in the collection.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/core.clj#L62" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/core.clj#L62" id="var-source">Source</a>
 </div>
 
 

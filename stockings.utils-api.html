@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>stockings.utils - Stockings 1.0.0 API documentation</title>
+    <title>stockings.utils - Stockings nil API documentation</title>
     <meta content="Stockings is a Clojure library that gives you an easy to use API to access financial data: current and historical stock quotes, exchange rates, industry sectors, companies, stock symbol suggestions, and more." name="description" />
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
@@ -41,7 +41,7 @@ namespace.
       <div id="leftcolumn"><div style="text-align: center;"></div>
 <div class="menu">
   <div class="WikiCustomNav WikiElement wiki">
-    <span class="toc-header"><span id="project-name">Stockings</span> <span id="version">1.0.0</span> API</span><br />
+    <span class="toc-header"><span id="project-name">Stockings</span> <span id="version"></span> API</span><br />
     <ul>
       <li><a class="wiki_link" href="index.html">Overview</a></li>
       <li><a class="wiki_link" href="api-index.html">API Index</a></li>
@@ -77,6 +77,8 @@ namespace.
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#stockings.utils/parse-keyword">parse-keyword</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#stockings.utils/parse-long">parse-long</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#stockings.utils/parse-percent">parse-percent</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#stockings.utils/parse-time">parse-time</a>
@@ -92,7 +94,7 @@ namespace.
 </div>
 </div>
                 <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">stockings.utils</span>
-  - <span id="header-project">Stockings</span> <span id="header-version">1.0.0</span> (<span id="header-status">stable</span>)
+  - <span id="header-project">Stockings</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 <span id="author-line">by <span id="author-name">Filippo Tampieri &lt;fxt@fxtlabs.com&gt;</span><br /></span>
 <br />Full namespace name: <span id="long-name">stockings.utils</span>
@@ -120,7 +122,7 @@ or a vector depending on whether the query returns one or more results.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L56" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L56" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -134,7 +136,7 @@ yyyy-MM-dd or M/dd/yyyy formats, it returns the date as an
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L116" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L124" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -150,7 +152,7 @@ respectively.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L91" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L99" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -163,7 +165,7 @@ value as an int; otherwise it returns <code>nil</code>.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L78" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L78" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -176,7 +178,20 @@ keyword; otherwise it returns <code>nil</code>.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L71" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L71" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="stockings.utils/parse-long">parse-long</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (parse-long s)
+</pre>
+  <div id="var-docstr"><p>If the supplied string represents a valid integer, it returns its
+value as a long; otherwise it returns <code>nil</code>.</p>
+</div>
+  
+  
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L86" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -191,7 +206,7 @@ otherwise, it returns <code>nil</code>.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L102" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L110" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -205,7 +220,7 @@ otherwise, it returns <code>nil</code>.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L130" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L138" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -222,7 +237,7 @@ exception).</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L32" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L32" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -236,7 +251,7 @@ escaped double quotes.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L14" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L14" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -251,7 +266,7 @@ converts them in a list suitable for a YQL query.</p>
 </div>
   
   
-  <a href="https://github.com/fxtlabs/stockings/blob/ce692c8626d64438cb9dbfe55937a2063b1c4fc5/src/stockings/utils.clj#L21" id="var-source">Source</a>
+  <a href="https://github.com/fxtlabs/stockings/blob/bcdb9a58ff8cfb2902620d08fe262e8298817a99/src/stockings/utils.clj#L21" id="var-source">Source</a>
 </div>
 
 

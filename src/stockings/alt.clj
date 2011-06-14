@@ -4,7 +4,7 @@
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (join split-lines)]
         [clojure.contrib.def :only (defvar-)]
-        [stockings.utils :only (parse-double parse-int parse-keyword)]
+        [stockings.utils :only (parse-double parse-int parse-long parse-keyword)]
         [stockings.core :only (bare-stock-symbol)])
   (:require [clojure.xml :as xml]
             [clj-http.client :as client])
@@ -47,7 +47,7 @@
                                         (:trade_time_utc raw-map))
        :change (parse-double (:change raw-map))
        :percent-change (/ (parse-double (:perc_change raw-map)) 100.0)
-       :volume (parse-int (:volume raw-map))
+       :volume (parse-long (:volume raw-map))
        :avg-volume (parse-double (:avg_volume raw-map))})))
 
 ;;; Note that we strip any exchange prefix from the stock symbol

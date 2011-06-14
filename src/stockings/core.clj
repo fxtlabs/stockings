@@ -123,7 +123,7 @@
    :PercentChangeFromYearLow yql/parse-percent
    :PriceBook yql/parse-double
    :ChangeFromFiftydayMovingAverage yql/parse-double
-   :AverageDailyVolume yql/parse-int
+   :AverageDailyVolume yql/parse-long
    :Open yql/parse-double
    :PercentChangeFromTwoHundreddayMovingAverage yql/parse-percent
    :BidRealTime yql/parse-double
@@ -131,7 +131,7 @@
    :LastTradeTime yql/parse-time
    :LastTradeDate yql/parse-date
    :Change yql/parse-double
-   :Volume yql/parse-int
+   :Volume yql/parse-long
    :PEGRatio yql/parse-double
    :StockExchange identity
    :ChangeFromYearHigh yql/parse-double
@@ -256,7 +256,7 @@
         high (yql/parse-double (:High r))
         low (yql/parse-double (:Low r))
         close (yql/parse-double (:Close r))
-        volume (yql/parse-int (:Volume r))]
+        volume (yql/parse-long (:Volume r))]
     (HistoricalQuote. date open high low close volume)))
 
 (defn get-historical-quotes

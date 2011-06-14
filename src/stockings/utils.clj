@@ -83,6 +83,14 @@
     (if-let [m (re-matches #"(?:\+|\-)?\d+" s)]
       (Integer/parseInt m 10))))
 
+(defn parse-long
+  "If the supplied string represents a valid integer, it returns its
+   value as a long; otherwise it returns `nil`."
+  [^String s]
+  (if s
+    (if-let [m (re-matches #"(?:\+|\-)?\d+" s)]
+      (Long/parseLong m 10))))
+
 (defvar- multipliers
   {"B" 1.0e9
    "M" 1.0e6

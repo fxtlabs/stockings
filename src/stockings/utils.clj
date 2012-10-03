@@ -3,13 +3,12 @@
    (Yahoo! Query Language) and parse a variety of value types."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (join lower-case)]
-        [clojure.contrib.def :only (defvar defvar-)]
-        [clojure.contrib.json :only (read-json)])
+        [clojure.data.json :only (read-json)])
   (:require [clj-http.client :as client])
   (:import (org.joda.time DateTime LocalDate)
            (org.joda.time.format DateTimeFormat)))
 
-(defvar- yql-base-url "http://query.yahooapis.com/v1/public/yql")
+(def yql-base-url "http://query.yahooapis.com/v1/public/yql")
 
 (defn yql-string
   "String values in a YQL query must be enclosed in double quotes.
@@ -51,6 +50,7 @@
     (let [payload (-> response :body strip-wrapper read-json)]
       (if-let [error (:error payload)]
         (throw (Exception. (:description error))))
+      ; (print (:quote (:results (:query payload))))
       (:results (:query payload)))))
 
 (defn map-parser
@@ -91,7 +91,7 @@
     (if-let [m (re-matches #"(?:\+|\-)?\d+" s)]
       (Long/parseLong m 10))))
 
-(defvar- multipliers
+(def multipliers
   {"B" 1.0e9
    "M" 1.0e6
    "K" 1.0e3})
@@ -117,7 +117,7 @@
     (if-let [m (re-matches #"((?:\+|\-)?\d+(?:\.\d*)?)%" s)]
       (/ (Double/parseDouble (second m)) 100.0))))
 
-(defvar- date-parsers
+(def date-parsers
   [(DateTimeFormat/forPattern "yyyy-MM-dd")
    (DateTimeFormat/forPattern "M/dd/yyyy")])
 
@@ -133,7 +133,7 @@
            :when d]
        (.toLocalDate d)))))
 
-(defvar- time-parser (DateTimeFormat/forPattern "hh:mmaa"))
+(def time-parser (DateTimeFormat/forPattern "hh:mmaa"))
 
 (defn parse-time
   "If the supplied string represents a valid time in the hh:mmaa format

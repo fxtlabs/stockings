@@ -1,10 +1,11 @@
 (defproject com.fxtlabs/stockings "1.1.0-SNAPSHOT"
   :description "Easy access to financial data: stock quotes, exchange rates, industry sectors, companies, and more."
   :url "https://github.com/fxtlabs/stockings"
-  :dependencies [[org.clojure/clojure "1.2.1"]
+  :dependencies [[org.clojure/clojure "1.4.0"]
                  [joda-time "1.6"]
-                 [clojure-csv "1.2.4"]
-                 [clj-http "0.1.3"]]
+                 [clj-http "0.1.3"]
+                 [org.clojure/data.csv "0.1.2"]
+                 [org.clojure/data.json "0.1.3"]]
   :dev-dependencies 
   [[com.fxtlabs/autodoc "0.8.0-SNAPSHOT"
     :exclusions [org.clojure/clojure org.clojure/clojure-contrib]]]

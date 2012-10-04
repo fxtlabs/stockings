@@ -1,4 +1,4 @@
-(defproject com.fxtlabs/stockings "1.1.0-SNAPSHOT"
+(defproject com.fxtlabs/stockings "1.2.0-SNAPSHOT"
   :description "Easy access to financial data: stock quotes, exchange rates, industry sectors, companies, and more."
   :url "https://github.com/fxtlabs/stockings"
   :dependencies [[org.clojure/clojure "1.4.0"]

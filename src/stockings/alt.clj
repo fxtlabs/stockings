@@ -3,7 +3,6 @@
    from Google Finance."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (join split-lines)]
-        [clojure.contrib.def :only (defvar-)]
         [stockings.utils :only (parse-double parse-int parse-long parse-keyword)]
         [stockings.core :only (bare-stock-symbol)])
   (:require [clojure.xml :as xml]
@@ -18,7 +17,7 @@
 ;;; Get current quotes
 ;;;
 
-(defvar- date-time-parser
+(def date-time-parser
   (.withZone (DateTimeFormat/forPattern "yyyyMMddHHmmss") DateTimeZone/UTC))
 
 (defn- parse-date-time
@@ -92,14 +91,14 @@
 ;;; Get historical quotes
 ;;;
 
-(defvar- date-parser (DateTimeFormat/forPattern "dd-MMM-yy"))
+(def date-parser (DateTimeFormat/forPattern "dd-MMM-yy"))
 
 (defn- parse-date
   "Parse a string representing a date into a `org.joda.time.LocalDate` object."
   [^String s]
   (.toLocalDate (.parseDateTime date-parser s)))
 
-(defvar- re-line
+(def re-line
   #"((?:[0-9]|[123][0-9])-\w{3}-[0-9]{2}),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?),([0-9]+(?:\.[0-9]*)?)"
   "The regular expression used to match one line in the CSV-encoded quotes.
    It matches a line in the form `Date,Open,High,Low,Close,Volume`

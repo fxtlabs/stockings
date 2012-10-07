@@ -4,8 +4,7 @@
    by the NASDAQ at <http://www.nasdaq.com/screening/company-list.aspx>."
   {:author "Filippo Tampieri <fxt@fxtlabs.com>"}
   (:use [clojure.string :only (split lower-case upper-case)]
-        [clojure.contrib.def :only (defvar defvar-)]
-        [clojure-csv.core :only (parse-csv)]
+        [clojure.data.csv :as csv]
         [stockings.core :only (explode-stock-symbol)])
   (:require [clj-http.client :as client]))
 
@@ -13,29 +12,30 @@
 ;;; Stock Exchanges
 ;;;
 
-(defvar nasdaq
-  {:name "NASDAQ Stock Market", :symbol "NASDAQ"}
-  "A map describing the NASDAQ Stock Market (NASDAQ).")
+(def nasdaq
+  "A map describing the NASDAQ Stock Market (NASDAQ)."
+  {:name "NASDAQ Stock Market", :symbol "NASDAQ"})
 
-(defvar nyse
-  {:name  "New York Stock Exchange", :symbol "NYSE"}
-  "A map describing the New York Stock Exchange (NYSE).")
+(def nyse
+  "A map describing the New York Stock Exchange (NYSE)."
+  {:name  "New York Stock Exchange", :symbol "NYSE"})
 
-(defvar amex
-  {:name "NYSE Amex Equities", :symbol "AMEX"}
-  "A map describing the NYSE Amex Equities (AMEX).")
+(def amex
+  "A map describing the NYSE Amex Equities (AMEX)."
+  {:name "NYSE Amex Equities", :symbol "AMEX"})
 
-(defvar exchanges
+(def exchanges
+  "A map from stock exchange keywords to stock exchange info maps."
   {:amex amex,
    :nasdaq nasdaq
-   :nyse nyse}
-  "A map from stock exchange keywords to stock exchange info maps.")
+   :nyse nyse})
 
 ;;;
 ;;; Industry Sectors
 ;;;
 
-(defvar industry-sectors
+(def industry-sectors
+  "A list of the major industry sectors as classified by the NASDAQ."
   ["Basic Industries"
    "Capital Goods"
    "Consumer Durables"
@@ -47,14 +47,13 @@
    "Miscellaneous"
    "Public Utilities"
    "Technology"
-   "Transportation"]
-  "A list of the major industry sectors as classified by the NASDAQ.")
+   "Transportation"])
 
 ;;;
 ;;; Companies
 ;;;
 
-(defvar- source-url "http://www.nasdaq.com/screening/companies-by-name.aspx")
+(def source-url "http://www.nasdaq.com/screening/companies-by-name.aspx")
 
 ;; Use a record instead of a map for efficiency since the lists of
 ;; companies are pretty long.
@@ -68,7 +67,7 @@
   [r]
   (and
    (vector? r)
-   (= 9 (count r))
+   (= 10 (count r))
    (< 0 (count (first r)))))
 
 (defn- convert-record
@@ -99,7 +98,7 @@
    industry for each company."
   [exchange-key ^String s]
   (->> s
-       parse-csv
+       csv/read-csv
        rest
        (filter valid-record?)
        (map (partial convert-record exchange-key))))
